@@ -1,0 +1,8 @@
+SELECT `tasks_id`, `tasks_job_type`
+                FROM `tasks`
+                WHERE
+                (`tasks_execute` <= NOW() AND `tasks_status` = 'new')
+                OR
+                (`tasks_execute` <= NOW() AND `tasks_status` = 'processing' AND `tasks_execute` + 60 < NOW() AND `tasks_retry_count` < 3)
+                ORDER BY `tasks_execute`, `tasks_id`, `tasks_status` DESC
+                LIMIT 0, 5
