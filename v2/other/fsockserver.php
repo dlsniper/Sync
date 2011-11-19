@@ -14,14 +14,16 @@ set_time_limit(0);
 ob_implicit_flush();
 
 // Server functions
-function rLog($msg){
+function rLog($msg)
+{
     return;
     $msg = "[" . date('Y-m-d H:i:s') . "] " . $msg;
     print($msg . "\n");
 
 }
 
-function printPage($content){
+function printPage($content)
+{
     $cdmp = "HTTP/1.1 200 OK\r\n";
     $cdmp .= "Date: Sun, 20 Mar 2011 16:01:02 GMT\r\n";
     $cdmp .= "Server: Helix App Server\r\n";
@@ -41,7 +43,7 @@ function printPage($content){
     $cdmp .= "    </head>\r\n";
     $cdmp .= "    <body>\r\n";
     $cdmp .= "        <div id=\"content\">\r\n";
-    $cdmp .= $content."\r\n";
+    $cdmp .= $content . "\r\n";
     $cdmp .= "</div>\r\n";
     $cdmp .= "        <script type=\"text/javascript\" defer=\"defer\">\r\n";
     $cdmp .= "\r\n";
@@ -75,13 +77,13 @@ socket_listen($sock) or die("[" . date('Y-m-d H:i:s') . "] Could not set up sock
 rLog("Server started at " . $host . ":" . $port);
 
 // Server loop
-while(true){
+while (true) {
     socket_set_block($sock);
 
     // Setup clients listen socket for reading
     $read[0] = $sock;
-    for($i = 0; $i < $max; $i ++){
-        if($client[$i]['sock'] != null)
+    for ($i = 0; $i < $max; $i++) {
+        if ($client[$i]['sock'] != null)
             $read[$i + 1] = $client[$i]['sock'];
     }
 
@@ -89,28 +91,28 @@ while(true){
     $ready = socket_select($read, $write = NULL, $except = NULL, $tv_sec = NULL);
 
     // If a new connection is being made add it to the clients array
-    if(in_array($sock, $read)){
-        for($i = 0; $i < $max; $i ++){
-            if($client[$i]['sock'] == null){
-                if(($client[$i]['sock'] = socket_accept($sock)) < 0){
+    if (in_array($sock, $read)) {
+        for ($i = 0; $i < $max; $i++) {
+            if ($client[$i]['sock'] == null) {
+                if (($client[$i]['sock'] = socket_accept($sock)) < 0) {
                     rLog("socket_accept() failed: " . socket_strerror($client[$i]['sock']));
                 } else {
                     rLog("Client #" . $i . " connected");
                 }
                 break;
-            } elseif($i == $max - 1) {
+            } elseif ($i == $max - 1) {
                 rLog("Too many clients");
             }
         }
 
-        if(-- $ready <= 0)
+        if (--$ready <= 0)
             continue;
     }
-    for($i = 0; $i < $max; $i ++){
-        if(in_array($client[$i]['sock'], $read)){
+    for ($i = 0; $i < $max; $i++) {
+        if (in_array($client[$i]['sock'], $read)) {
             $input = socket_read($client[$i]['sock'], 1024);
 
-            if($input == null){
+            if ($input == null) {
                 unset($client[$i]);
             }
 
@@ -119,20 +121,20 @@ while(true){
             $headers = explode("\r\n", $input);
 
             //See if we have a valid GET request from the client
-            if(stripos($headers[0], "get") !== false){
+            if (stripos($headers[0], "get") !== false) {
                 // Let's see what the request wants
                 preg_match('/GET (.*) HTTP\/\d+\.\d+/i', $headers[0], $path);
 
                 $path = $path[1];
 
-                if($path == "/term"){
+                if ($path == "/term") {
                     socket_close($sock);
                     rLog("Terminated server (requested by client #" . $i . ")");
                     exit();
-                } elseif($path == "/status") {
-                    $status  = "<pre>";
+                } elseif ($path == "/status") {
+                    $status = "<pre>";
                     $status .= "Server status \r\n";
-                    $status .= "Used memory: " . memory_get_usage(true). "\r\n";
+                    $status .= "Used memory: " . memory_get_usage(true) . "\r\n";
                     $status .= "Peak memory: " . memory_get_peak_usage(true) . "\r\n";
                     $status .= "</pre>";
 
@@ -143,32 +145,32 @@ while(true){
                 socket_close($client[$i]['sock']);
                 unset($client[$i]['sock']);
                 rLog("Disconnected(2) client #" . $i);
-                for($p = 0; $p < count($client); $p ++){
+                for ($p = 0; $p < count($client); $p++) {
                     socket_write($client[$p]['sock'], "DISC " . $i . chr(0));
                 }
 
-                if($i == $adm){
-                    $adm = - 1;
+                if ($i == $adm) {
+                    $adm = -1;
                 }
             } else {
                 // else we quit the client
                 socket_close($client[$i]['sock']);
                 unset($client[$i]['sock']);
                 rLog("Disconnected(2) client #" . $i);
-                for($p = 0; $p < count($client); $p ++){
+                for ($p = 0; $p < count($client); $p++) {
                     socket_write($client[$p]['sock'], "DISC " . $i . chr(0));
                 }
 
-                if($i == $adm){
-                    $adm = - 1;
+                if ($i == $adm) {
+                    $adm = -1;
                 }
             }
         } else {
-            if($client[$i]['sock']!=null){
+            if ($client[$i]['sock'] != null) {
                 //Close the socket
                 socket_close($client[$i]['sock']);
                 unset($client[$i]);
-                rLog("Disconnected(1) client #".$i);
+                rLog("Disconnected(1) client #" . $i);
             }
         }
     }

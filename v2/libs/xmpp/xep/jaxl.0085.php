@@ -41,44 +41,47 @@
  * @link http://code.google.com/p/jaxl
  */
 
-    /**
-     * XEP-0085: Chat State Notifications
-     * 
-     * Adds 5 chat state a.k.a 'composing', 'paused', 'active', 'inactive', 'gone'
-    */
-    class JAXL0085 {
+/**
+ * XEP-0085: Chat State Notifications
+ *
+ * Adds 5 chat state a.k.a 'composing', 'paused', 'active', 'inactive', 'gone'
+ */
+class JAXL0085
+{
 
-        public static $ns = 'http://jabber.org/protocol/chatstates';        
-        public static $chatStates = array('composing', 'active', 'inactive', 'paused', 'gone');
-        
-        public static function init($jaxl) {
-            $jaxl->features[] = self::$ns;
-            
-            JAXLXml::addTag('message', 'composing', '//message/composing/@xmlns');
-            JAXLXml::addTag('message', 'active', '//message/active/@xmlns');
-            JAXLXml::addTag('message', 'inactive', '//message/inactive/@xmlns');
-            JAXLXml::addTag('message', 'paused', '//message/paused/@xmlns');
-            JAXLXml::addTag('message', 'gone', '//message/gone/@xmlns');
-            $jaxl->addPlugin('jaxl_get_message', array('JAXL0085', 'getMessage'));
-        }
-        
-        public static function getMessage($payloads, $jaxl) {
-            foreach($payloads as $key => $payload) {
-                $payload['chatState'] = false;
-                
-                foreach(self::$chatStates as $state) {
-                    if(isset($payload[$state]) && $payload[$state] == self::$ns) {
-                        $payload['chatState'] = $state;
-                    }
-                    unset($payload[$state]);
-                }
-                
-                $payloads[$key] = $payload;
-            }
-            
-            return $payloads;
-        }
-        
+    public static $ns = 'http://jabber.org/protocol/chatstates';
+    public static $chatStates = array('composing', 'active', 'inactive', 'paused', 'gone');
+
+    public static function init($jaxl)
+    {
+        $jaxl->features[] = self::$ns;
+
+        JAXLXml::addTag('message', 'composing', '//message/composing/@xmlns');
+        JAXLXml::addTag('message', 'active', '//message/active/@xmlns');
+        JAXLXml::addTag('message', 'inactive', '//message/inactive/@xmlns');
+        JAXLXml::addTag('message', 'paused', '//message/paused/@xmlns');
+        JAXLXml::addTag('message', 'gone', '//message/gone/@xmlns');
+        $jaxl->addPlugin('jaxl_get_message', array('JAXL0085', 'getMessage'));
     }
-    
+
+    public static function getMessage($payloads, $jaxl)
+    {
+        foreach ($payloads as $key => $payload) {
+            $payload['chatState'] = false;
+
+            foreach (self::$chatStates as $state) {
+                if (isset($payload[$state]) && $payload[$state] == self::$ns) {
+                    $payload['chatState'] = $state;
+                }
+                unset($payload[$state]);
+            }
+
+            $payloads[$key] = $payload;
+        }
+
+        return $payloads;
+    }
+
+}
+
 ?>

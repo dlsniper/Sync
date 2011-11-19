@@ -2,13 +2,13 @@
 
 /**
  * This is how a job is launched
- * @package	TaskServer
+ * @package    TaskServer
  * @version 0.1
  * @author Florin Patan
  * @copyright Florin Patan
  */
 // we accept the ticks as they happen
-declare(ticks = 1);
+declare(ticks = 1) ;
 
 // We can run forever
 set_time_limit(0);

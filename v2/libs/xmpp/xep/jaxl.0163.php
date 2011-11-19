@@ -41,19 +41,22 @@
  * @link http://code.google.com/p/jaxl
  */
 
-    /**
-     * XEP-0163 : Personal Eventing Protocol
-    */
-    class JAXL0163 {
-        
-        public static function init($jaxl) {
-            $jaxl->requires('JAXL0060');
-        }
-        
-        public static function publishItem($jaxl, $from, $node, $item) {
-            return JAXL0060::publishItem($jaxl, false, $from, $node, $item);
-        }
-        
+/**
+ * XEP-0163 : Personal Eventing Protocol
+ */
+class JAXL0163
+{
+
+    public static function init($jaxl)
+    {
+        $jaxl->requires('JAXL0060');
     }
+
+    public static function publishItem($jaxl, $from, $node, $item)
+    {
+        return JAXL0060::publishItem($jaxl, false, $from, $node, $item);
+    }
+
+}
 
 ?>

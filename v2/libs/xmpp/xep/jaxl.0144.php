@@ -41,11 +41,12 @@
  * @link http://code.google.com/p/jaxl
  */
 
-    /**
-     * XEP-0144 : Roster Item Exchange
-    */
-    class JAXL0144 {
+/**
+ * XEP-0144 : Roster Item Exchange
+ */
+class JAXL0144
+{
 
-    }
+}
 
 ?>

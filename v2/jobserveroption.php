@@ -7,7 +7,8 @@
  * @author Florin Patan
  * @copyright Florin Patan
  */
-class jobServerOption {
+class jobServerOption
+{
 
     /**
      * Type of the job
@@ -42,7 +43,8 @@ class jobServerOption {
      * @param  int     How many times should we retry the current job before aborting it
      * @param  int     How much should we be waiting for until we retry the job
      */
-    public function __construct($jobType, $parallelThreads = 5, $jobTimeout = 60, $retryCount = 3, $retryPause = 120) {
+    public function __construct($jobType, $parallelThreads = 5, $jobTimeout = 60, $retryCount = 3, $retryPause = 120)
+    {
         $this->jobType = $jobType;
         $this->parallelThreads = $parallelThreads;
         $this->jobTimeout = $jobTimeout;
@@ -53,7 +55,8 @@ class jobServerOption {
     /**
      * Let's have a little destruction of our own
      */
-    public function __destruct() {
+    public function __destruct()
+    {
         unset($this->jobType);
         unset($this->parallelThreads);
         unset($this->jobTimeout);

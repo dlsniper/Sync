@@ -41,49 +41,52 @@
  * @link http://code.google.com/p/jaxl
  */
 
-    /**
-     * XEP-0080: User Location
-    */
-    class JAXL0080 {
-        
-        public static $ns = 'http://jabber.org/protocol/geoloc';
+/**
+ * XEP-0080: User Location
+ */
+class JAXL0080
+{
 
-        public static function init($jaxl) {
-            // requires PEP XEP
-            $jaxl->requires('JAXL0163');
+    public static $ns = 'http://jabber.org/protocol/geoloc';
 
-            // update client feature list
-            $jaxl->features[] = self::$ns;
+    public static function init($jaxl)
+    {
+        // requires PEP XEP
+        $jaxl->requires('JAXL0163');
 
-            JAXLXml::addTag('message', 'geoloc', '//message/event/items/item/geoloc/@xmlns');
-            JAXLXml::addTag('message', 'geolocLang', '//message/event/items/item/geoloc/@xml:lang');
-            JAXLXml::addTag('message', 'geolocAccuracy', '//message/event/items/item/geoloc/accuracy');
-            JAXLXml::addTag('message', 'geolocAlt', '//message/event/items/item/geoloc/alt');
-            JAXLXml::addTag('message', 'geolocBearing', '//message/event/items/item/geoloc/bearing');
-            JAXLXml::addTag('message', 'geolocBuilding', '//message/event/items/item/geoloc/building');
-            JAXLXml::addTag('message', 'geolocCountry', '//message/event/items/item/geoloc/country');
-            JAXLXml::addTag('message', 'geolocCountryCode', '//message/event/items/item/geoloc/countrycode');
-            JAXLXml::addTag('message', 'geolocDatum', '//message/event/items/item/geoloc/datum');
-            JAXLXml::addTag('message', 'geolocDescription', '//message/event/items/item/geoloc/description');
-            JAXLXml::addTag('message', 'geolocError', '//message/event/items/item/geoloc/error');
-            JAXLXml::addTag('message', 'geolocFloor', '//message/event/items/item/geoloc/floor');
-            JAXLXml::addTag('message', 'geolocLat', '//message/event/items/item/geoloc/lat');
-            JAXLXml::addTag('message', 'geolocLocality', '//message/event/items/item/geoloc/locality');
-            JAXLXml::addTag('message', 'geolocLon', '//message/event/items/item/geoloc/lon');
-            JAXLXml::addTag('message', 'geolocPostalCode', '//message/event/items/item/geoloc/postalcode');
-            JAXLXml::addTag('message', 'geolocRegion', '//message/event/items/item/geoloc/region');
-            JAXLXml::addTag('message', 'geolocRoom', '//message/event/items/item/geoloc/room');
-            JAXLXml::addTag('message', 'geolocSpeed', '//message/event/items/item/geoloc/speed');
-            JAXLXml::addTag('message', 'geolocStreet', '//message/event/items/item/geoloc/street');
-            JAXLXml::addTag('message', 'geolocText', '//message/event/items/item/geoloc/text');
-            JAXLXml::addTag('message', 'geolocTimestamp', '//message/event/items/item/geoloc/timestamp');
-            JAXLXml::addTag('message', 'geolocURI', '//message/event/items/item/geoloc/uri');
-        }
+        // update client feature list
+        $jaxl->features[] = self::$ns;
 
-        public static function publishLocation($jaxl, $from, $item) {
-            return JAXL0163::publishItem($jaxl, $from, self::$ns, $item);
-        }
-        
+        JAXLXml::addTag('message', 'geoloc', '//message/event/items/item/geoloc/@xmlns');
+        JAXLXml::addTag('message', 'geolocLang', '//message/event/items/item/geoloc/@xml:lang');
+        JAXLXml::addTag('message', 'geolocAccuracy', '//message/event/items/item/geoloc/accuracy');
+        JAXLXml::addTag('message', 'geolocAlt', '//message/event/items/item/geoloc/alt');
+        JAXLXml::addTag('message', 'geolocBearing', '//message/event/items/item/geoloc/bearing');
+        JAXLXml::addTag('message', 'geolocBuilding', '//message/event/items/item/geoloc/building');
+        JAXLXml::addTag('message', 'geolocCountry', '//message/event/items/item/geoloc/country');
+        JAXLXml::addTag('message', 'geolocCountryCode', '//message/event/items/item/geoloc/countrycode');
+        JAXLXml::addTag('message', 'geolocDatum', '//message/event/items/item/geoloc/datum');
+        JAXLXml::addTag('message', 'geolocDescription', '//message/event/items/item/geoloc/description');
+        JAXLXml::addTag('message', 'geolocError', '//message/event/items/item/geoloc/error');
+        JAXLXml::addTag('message', 'geolocFloor', '//message/event/items/item/geoloc/floor');
+        JAXLXml::addTag('message', 'geolocLat', '//message/event/items/item/geoloc/lat');
+        JAXLXml::addTag('message', 'geolocLocality', '//message/event/items/item/geoloc/locality');
+        JAXLXml::addTag('message', 'geolocLon', '//message/event/items/item/geoloc/lon');
+        JAXLXml::addTag('message', 'geolocPostalCode', '//message/event/items/item/geoloc/postalcode');
+        JAXLXml::addTag('message', 'geolocRegion', '//message/event/items/item/geoloc/region');
+        JAXLXml::addTag('message', 'geolocRoom', '//message/event/items/item/geoloc/room');
+        JAXLXml::addTag('message', 'geolocSpeed', '//message/event/items/item/geoloc/speed');
+        JAXLXml::addTag('message', 'geolocStreet', '//message/event/items/item/geoloc/street');
+        JAXLXml::addTag('message', 'geolocText', '//message/event/items/item/geoloc/text');
+        JAXLXml::addTag('message', 'geolocTimestamp', '//message/event/items/item/geoloc/timestamp');
+        JAXLXml::addTag('message', 'geolocURI', '//message/event/items/item/geoloc/uri');
     }
+
+    public static function publishLocation($jaxl, $from, $item)
+    {
+        return JAXL0163::publishItem($jaxl, $from, self::$ns, $item);
+    }
+
+}
 
 ?>

@@ -40,65 +40,69 @@
  * @copyright Abhinav Singh
  * @link http://code.google.com/p/jaxl
  */
-    
-    /**
-     * XEP-0004 : Data Forms
-    */
-    class JAXL0004 {
 
-        public static $ns = 'jabber:x:data';
+/**
+ * XEP-0004 : Data Forms
+ */
+class JAXL0004
+{
 
-        public static function init($jaxl) {
-            $jaxl->features[] = self::$ns;
-        }
+    public static $ns = 'jabber:x:data';
 
-        /*
-         * create XEP-0004 complaint data form using $fields
-        */
-        public static function setFormField($fields, $title=false, $inst=false, $type='form') {
-            $payload = '';
-            
-            $payload .= '<x xmlns="'.self::$ns.'" type="'.$type.'">';
-            if($title) $payload .= '<title>'.$title.'</title>';
-            if($inst) $payload .= '<instruction>'.$inst.'</instruction>';
-            foreach($fields as $field) {
-                $payload .= '<field var="'.$field['var'].'">';
-                $payload .= '<value>'.$field['value'].'</value>';
-                $payload .= '</field>';
-            }
-            $payload .= '</x>';
-            
-            return $payload;
-        }
-        
-        /*
-         * Parses incoming form $fields
-        */
-        public static function getFormField($fields) {
-            $result = array();
-            foreach($fields as $field) {
-                $f = array();
-            
-                $f['type'] = $field['@']['type'];
-                $f['label'] = $field['@']['label'];
-                $f['var'] = $field['@']['var'];
-                
-                $f['desc'] = $field['#']['desc'][0]['#'];
-                $f['required'] = $field['#']['required'][0]['#'];
-                $f['value'] = $field['#']['value'][0]['#'];
-                                
-                if(is_array($field['#']['option'])) { 
-                    $f['option'] = array();
-                    foreach($field['#']['option'] as $option) {
-                        $f['option'][] = array('label'=>$option['@']['label'], 'value'=>$option['#']['value'][0]['#']);
-                    }
-                }
-                
-                $result[] = $f;
-            }
-            return $result;
-        }
-
+    public static function init($jaxl)
+    {
+        $jaxl->features[] = self::$ns;
     }
+
+    /*
+     * create XEP-0004 complaint data form using $fields
+    */
+    public static function setFormField($fields, $title = false, $inst = false, $type = 'form')
+    {
+        $payload = '';
+
+        $payload .= '<x xmlns="' . self::$ns . '" type="' . $type . '">';
+        if ($title) $payload .= '<title>' . $title . '</title>';
+        if ($inst) $payload .= '<instruction>' . $inst . '</instruction>';
+        foreach ($fields as $field) {
+            $payload .= '<field var="' . $field['var'] . '">';
+            $payload .= '<value>' . $field['value'] . '</value>';
+            $payload .= '</field>';
+        }
+        $payload .= '</x>';
+
+        return $payload;
+    }
+
+    /*
+     * Parses incoming form $fields
+    */
+    public static function getFormField($fields)
+    {
+        $result = array();
+        foreach ($fields as $field) {
+            $f = array();
+
+            $f['type'] = $field['@']['type'];
+            $f['label'] = $field['@']['label'];
+            $f['var'] = $field['@']['var'];
+
+            $f['desc'] = $field['#']['desc'][0]['#'];
+            $f['required'] = $field['#']['required'][0]['#'];
+            $f['value'] = $field['#']['value'][0]['#'];
+
+            if (is_array($field['#']['option'])) {
+                $f['option'] = array();
+                foreach ($field['#']['option'] as $option) {
+                    $f['option'][] = array('label' => $option['@']['label'], 'value' => $option['#']['value'][0]['#']);
+                }
+            }
+
+            $result[] = $f;
+        }
+        return $result;
+    }
+
+}
 
 ?>

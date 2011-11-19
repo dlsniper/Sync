@@ -41,89 +41,97 @@
  * @link http://code.google.com/p/jaxl
  */
 
-    /**
-     * XEP-0206: XMPP over BOSH
-     * 
-     * Uses XEP-0124 to wrap XMPP stanza's inside <body/> wrapper
-    */
-    class JAXL0206 {
-        
-        public static function init($jaxl) {
-            $jaxl->log("[[JaxlAction]] ".$_REQUEST['jaxl']."\n".json_encode($_REQUEST), 5);
-            
-            // Requires Bosh Session Manager
-            $jaxl->requires('JAXL0124');
-        }
-        
-        public static function jaxl($jaxl, $xml) { 
-            $jaxl->sendXML(urldecode($xml));
-        }
+/**
+ * XEP-0206: XMPP over BOSH
+ *
+ * Uses XEP-0124 to wrap XMPP stanza's inside <body/> wrapper
+ */
+class JAXL0206
+{
 
-        public static function startStream($jaxl) {
-            $_SESSION['jaxl_auth'] = 'connect';
+    public static function init($jaxl)
+    {
+        $jaxl->log("[[JaxlAction]] " . $_REQUEST['jaxl'] . "\n" . json_encode($_REQUEST), 5);
 
-            $xml = "";
-            $xml .= "<body";
-            $xml .= " content='".$jaxl->bosh['content']."'";
-            $xml .= " hold='".$jaxl->bosh['hold']."'";
-            $xml .= " xmlns='".$jaxl->bosh['xmlns']."'";
-            $xml .= " wait='".$jaxl->bosh['wait']."'";
-            $xml .= " rid='".++$jaxl->bosh['rid']."'";
-            $xml .= " version='".$jaxl->bosh['version']."'";
-            $xml .= " polling='".$jaxl->bosh['polling']."'";
-            $xml .= " secure='".$jaxl->bosh['secure']."'";
-            $xml .= " xmlns:xmpp='".$jaxl->bosh['xmlnsxmpp']."'";
-            $xml .= " to='".$jaxl->domain."'";
-            $xml .= " route='xmpp:".$jaxl->host.":".$jaxl->port."'";
-            $xml .= " xmpp:version='".$jaxl->bosh['xmppversion']."'/>";
-            
-            $jaxl->sendXML($xml);
-        }
-        
-        public static function endStream($jaxl) {
-            $_SESSION['jaxl_auth'] = 'disconnect';
-
-            $xml = "";
-            $xml .= "<body";
-            $xml .= " rid='".++$jaxl->bosh['rid']."'";
-            $xml .= " sid='".$jaxl->bosh['sid']."'";
-            $xml .= " type='terminate'";
-            $xml .= " xmlns='".$jaxl->bosh['xmlns']."'>";
-            $xml .= "<presence type='unavailable' xmlns='jabber:client'/>";
-            $xml .= "</body>";
-            
-            $jaxl->sendXML($xml);
-        }
-        
-        public static function restartStream($jaxl) {
-            $xml = "";
-            $xml .= "<body";
-            $xml .= " rid='".++$jaxl->bosh['rid']."'";
-            $xml .= " sid='".$jaxl->bosh['sid']."'";
-            $xml .= " xmlns='".$jaxl->bosh['xmlns']."'";
-            
-            $xml .= " to='".$jaxl->host."'";
-            $xml .= " xmpp:restart='true'";
-            $xml .= " xmlns:xmpp='".$jaxl->bosh['xmlnsxmpp']."'/>";
-            
-            $_SESSION['jaxl_auth'] = false;
-            $jaxl->sendXML($xml);
-        }
-        
-        public static function ping($jaxl) {
-            $xml = '';
-            $xml .= '<body rid="'.++$jaxl->bosh['rid'].'"';
-            $xml .= ' sid="'.$jaxl->bosh['sid'].'"';
-            $xml .= ' xmlns="http://jabber.org/protocol/httpbind"/>';
-            
-            $_SESSION['jaxl_auth'] = true;
-            $jaxl->sendXML($xml);
-        }
-
-        public static function out($jaxl, $payload) {
-            JAXL0124::out($payload);
-        }
-        
+        // Requires Bosh Session Manager
+        $jaxl->requires('JAXL0124');
     }
-    
+
+    public static function jaxl($jaxl, $xml)
+    {
+        $jaxl->sendXML(urldecode($xml));
+    }
+
+    public static function startStream($jaxl)
+    {
+        $_SESSION['jaxl_auth'] = 'connect';
+
+        $xml = "";
+        $xml .= "<body";
+        $xml .= " content='" . $jaxl->bosh['content'] . "'";
+        $xml .= " hold='" . $jaxl->bosh['hold'] . "'";
+        $xml .= " xmlns='" . $jaxl->bosh['xmlns'] . "'";
+        $xml .= " wait='" . $jaxl->bosh['wait'] . "'";
+        $xml .= " rid='" . ++$jaxl->bosh['rid'] . "'";
+        $xml .= " version='" . $jaxl->bosh['version'] . "'";
+        $xml .= " polling='" . $jaxl->bosh['polling'] . "'";
+        $xml .= " secure='" . $jaxl->bosh['secure'] . "'";
+        $xml .= " xmlns:xmpp='" . $jaxl->bosh['xmlnsxmpp'] . "'";
+        $xml .= " to='" . $jaxl->domain . "'";
+        $xml .= " route='xmpp:" . $jaxl->host . ":" . $jaxl->port . "'";
+        $xml .= " xmpp:version='" . $jaxl->bosh['xmppversion'] . "'/>";
+
+        $jaxl->sendXML($xml);
+    }
+
+    public static function endStream($jaxl)
+    {
+        $_SESSION['jaxl_auth'] = 'disconnect';
+
+        $xml = "";
+        $xml .= "<body";
+        $xml .= " rid='" . ++$jaxl->bosh['rid'] . "'";
+        $xml .= " sid='" . $jaxl->bosh['sid'] . "'";
+        $xml .= " type='terminate'";
+        $xml .= " xmlns='" . $jaxl->bosh['xmlns'] . "'>";
+        $xml .= "<presence type='unavailable' xmlns='jabber:client'/>";
+        $xml .= "</body>";
+
+        $jaxl->sendXML($xml);
+    }
+
+    public static function restartStream($jaxl)
+    {
+        $xml = "";
+        $xml .= "<body";
+        $xml .= " rid='" . ++$jaxl->bosh['rid'] . "'";
+        $xml .= " sid='" . $jaxl->bosh['sid'] . "'";
+        $xml .= " xmlns='" . $jaxl->bosh['xmlns'] . "'";
+
+        $xml .= " to='" . $jaxl->host . "'";
+        $xml .= " xmpp:restart='true'";
+        $xml .= " xmlns:xmpp='" . $jaxl->bosh['xmlnsxmpp'] . "'/>";
+
+        $_SESSION['jaxl_auth'] = false;
+        $jaxl->sendXML($xml);
+    }
+
+    public static function ping($jaxl)
+    {
+        $xml = '';
+        $xml .= '<body rid="' . ++$jaxl->bosh['rid'] . '"';
+        $xml .= ' sid="' . $jaxl->bosh['sid'] . '"';
+        $xml .= ' xmlns="http://jabber.org/protocol/httpbind"/>';
+
+        $_SESSION['jaxl_auth'] = true;
+        $jaxl->sendXML($xml);
+    }
+
+    public static function out($jaxl, $payload)
+    {
+        JAXL0124::out($payload);
+    }
+
+}
+
 ?>

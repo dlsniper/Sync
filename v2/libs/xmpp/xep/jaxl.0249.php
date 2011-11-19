@@ -41,30 +41,33 @@
  * @link http://code.google.com/p/jaxl
  */
 
-    /**
-     * XEP-0249: Direct MUC Invitations
-    */
-    class JAXL0249 {
-        
-        public static $ns = "jabber:x:conference";
+/**
+ * XEP-0249: Direct MUC Invitations
+ */
+class JAXL0249
+{
 
-        public static function init($jaxl) {
-            $jaxl->features[] = self::$ns;
-        }
+    public static $ns = "jabber:x:conference";
 
-        public static function invite($jaxl, $toJid, $fromJid, $roomJid, $roomPass=false, $reason=false) {
-            $child = array();
-            $child['payload'] = '';
-            
-            $child['payload'] .= '<x xmlns="'.self::$ns.'"';
-            $child['payload'] .= ' jid="'.$roomJid.'"';
-            if($roomPass) $child['payload'] .= ' password="'.$roomPass.'"';
-            if($reason) $child['payload'] .= ' reason="'.$reason.'"';
-            $child['payload'] .= '/>';
-                        
-            XMPPSend::message($jaxl, $toJid, $fromJid, $child, 'chat', false);
-        }
-        
+    public static function init($jaxl)
+    {
+        $jaxl->features[] = self::$ns;
     }
+
+    public static function invite($jaxl, $toJid, $fromJid, $roomJid, $roomPass = false, $reason = false)
+    {
+        $child = array();
+        $child['payload'] = '';
+
+        $child['payload'] .= '<x xmlns="' . self::$ns . '"';
+        $child['payload'] .= ' jid="' . $roomJid . '"';
+        if ($roomPass) $child['payload'] .= ' password="' . $roomPass . '"';
+        if ($reason) $child['payload'] .= ' reason="' . $reason . '"';
+        $child['payload'] .= '/>';
+
+        XMPPSend::message($jaxl, $toJid, $fromJid, $child, 'chat', false);
+    }
+
+}
 
 ?>

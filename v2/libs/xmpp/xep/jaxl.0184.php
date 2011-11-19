@@ -40,40 +40,44 @@
  * @copyright Abhinav Singh
  * @link http://code.google.com/p/jaxl
  */
-	
-	/**
-	 * XEP-0184 Message Receipts
-	*/
-	class JAXL0184 {
-		
-		public static $ns = 'urn:xmpp:receipts';
-		
-		public static function init($jaxl) {
-			$jaxl->features[] = self::$ns;
-            
-            JAXLXml::addTag('message', 'request', '//message/request/@xmlns');
-			JAXLXml::addTag('message', 'received', '//message/received/@xmlns');
-			JAXLXml::addTag('message', 'receivedId', '//message/received/@id');
 
-			$jaxl->addPlugin('jaxl_get_message', array('JAXL0184', 'handleMessage'));
-		}
-		
-		public static function requestReceipt() {
-			$payload = '<request xmlns="'.self::$ns.'"/>';
-			return $payload;
-		}
-		
-		public static function handleMessage($payloads, $jaxl) {
-			foreach($payloads as $payload) {
-				if($payload['request'] == self::$ns) {
-					$child = array();
-					$child['payload'] = '<received xmlns="'.self::$ns.'" id="'.$payload['id'].'"/>';
-					XMPPSend::message($jaxl, $payload['from'], $payload['to'], $child, false, false);
-				}
-			}
-			return $payloads;
-		}
-		
-	}
-	
+/**
+ * XEP-0184 Message Receipts
+ */
+class JAXL0184
+{
+
+    public static $ns = 'urn:xmpp:receipts';
+
+    public static function init($jaxl)
+    {
+        $jaxl->features[] = self::$ns;
+
+        JAXLXml::addTag('message', 'request', '//message/request/@xmlns');
+        JAXLXml::addTag('message', 'received', '//message/received/@xmlns');
+        JAXLXml::addTag('message', 'receivedId', '//message/received/@id');
+
+        $jaxl->addPlugin('jaxl_get_message', array('JAXL0184', 'handleMessage'));
+    }
+
+    public static function requestReceipt()
+    {
+        $payload = '<request xmlns="' . self::$ns . '"/>';
+        return $payload;
+    }
+
+    public static function handleMessage($payloads, $jaxl)
+    {
+        foreach ($payloads as $payload) {
+            if ($payload['request'] == self::$ns) {
+                $child = array();
+                $child['payload'] = '<received xmlns="' . self::$ns . '" id="' . $payload['id'] . '"/>';
+                XMPPSend::message($jaxl, $payload['from'], $payload['to'], $child, false, false);
+            }
+        }
+        return $payloads;
+    }
+
+}
+
 ?>

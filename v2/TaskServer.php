@@ -2,7 +2,7 @@
 
 // Time goes by... ticking... without this we won't be able to use the signal
 // handler and we need this here to it will be
-declare(ticks = 1);
+declare(ticks = 1) ;
 
 /**
  * This is my task server.
@@ -17,78 +17,93 @@ declare(ticks = 1);
  * @todo Make use of the log() function to add loggin thru the whole application
  * @todo Implement the sys signals handling functions
  */
-class TaskServer {
+class TaskServer
+{
 
     /**
      * Define our task server pid file
      * @var    string  Path to our pid file
      */
     private static $pidFile = '/tmp/taskserver.sync.pid';
+
     /**
      * How many tasks have we've run until now
      * @var    int Number of tasks that have been processed until now
      */
     private $tasksProcessed = 0;
+
     /**
      * Store the maximum execution time of all the jobs
      * @var    int Maximum execution time from all jobs
      */
     private $maxExecutionTime = 0;
+
     /**
      * Store the maximum retry count of all the jobs
      * @var    int Number of maximum retries from all jobs
      */
     private $maxRetryCount = 0;
+
     /**
      * The maximum running threads on the server
-     * @var	int	Maximum active threads
+     * @var    int    Maximum active threads
      */
     private $maxRunningThreads = 0;
+
     /**
      * List of available tasks
      * @var    array   List of available tasks
      */
     private $registeredServers = array();
+
     /**
      * Running threads stored by thread type
      * @var    array   List of running jobs
      */
     private $activeThreads = array();
+
     /**
      * Hold our database link
      * @var    MySQLi  Database object
      */
     private $db;
+
     /**
      * Is this a debug run or not?
      * @var boolean    Debug mode state
      */
     public static $debugMode = false;
+
     /**
      * If we've had a fatal error because we are already running the server shouldn't delete the pid file
      * @var boolean    Was this a fatal error or not?
      */
     private static $fatalError = false;
+
     /**
      * Path to the log file for fatal errors
      * @var string
      */
     private static $logFileFatal = '/var/log/fatal.log';
+
     /**
      * Path to the log file for errors
      * @var string
      */
     private static $logFileError = '/var/log/error.log';
+
     /**
      * Path to the log file for fatal errors
      * @var string
      */
     private static $logFileInfo = '/var/log/info.log';
+
     /**
      * Array containing the pointer for the log files
      * @var array
      */
     private static $logFilePointers = array();
+
     /**
      * Time when we've started the server
      * @var date
@@ -97,24 +112,29 @@ class TaskServer {
 
     /**
      * Log messages to the files according to the message level
-     * @param String	Message to be logged
-     * @param int		Log level (see syslog() for levels
+     * @param String    Message to be logged
+     * @param int        Log level (see syslog() for levels
      */
-    public function log($message, $level, $isFatal = false) {
+    public function log($message, $level, $isFatal = false)
+    {
         // Find out what level type are we using
         switch (true) {
-            case $level == LOG_EMERG : $fp = fopen(self::$logFileFatal, 'a+');
+            case $level == LOG_EMERG :
+                $fp = fopen(self::$logFileFatal, 'a+');
                 break;
             case $level == LOG_ALERT :
             case $level == LOG_CRIT :
-            case $level == LOG_ERR : $fp = fopen(self::$logFileError, 'a+');
+            case $level == LOG_ERR :
+                $fp = fopen(self::$logFileError, 'a+');
                 break;
             case $level == LOG_WARNING :
             case $level == LOG_NOTICE :
             case $level == LOG_INFO :
-            case $level == LOG_DEBUG : $fp = fopen(self::$logFileInfo, 'a+');
+            case $level == LOG_DEBUG :
+                $fp = fopen(self::$logFileInfo, 'a+');
                 break;
-            default : $fp = fopen(self::$logFileInfo, 'a+');
+            default :
+                $fp = fopen(self::$logFileInfo, 'a+');
         }
 
         // Add the message to the log file
@@ -135,7 +155,8 @@ class TaskServer {
      * @param  bool    Specify if the server should start anyway, NOT RECOMANDED
      * @return bool    If server is running it will return false else true
      */
-    public static function checkRunMode($dieIfExisting = true) {
+    public static function checkRunMode($dieIfExisting = true)
+    {
         if (php_sapi_name() != 'cli') {
             echo 'This should be run from command link not from the browser.';
             if ($dieIfExisting) {
@@ -152,7 +173,8 @@ class TaskServer {
      * @param  bool    Specify if the server should start anyway, NOT RECOMANDED
      * @return bool    If server is running it will return false else true
      */
-    public static function checkInstances($dieIfExisting = true) {
+    public static function checkInstances($dieIfExisting = true)
+    {
         // clear file stat cache
         clearstatcache();
 
@@ -174,7 +196,8 @@ class TaskServer {
      * @param  bool    Specify if the server should start anyway, NOT RECOMANDED
      * @return bool    If server is running it will return false else true
      */
-    public static function checkStartUp($dieIfExisting = true) {
+    public static function checkStartUp($dieIfExisting = true)
+    {
         return self::checkRunMode($dieIfExisting) && self::checkInstances($dieIfExisting);
     }
 
@@ -184,7 +207,8 @@ class TaskServer {
      * @param  string  optional What should be included as message
      * @param  bool    Is this a fatal error or not
      */
-    public static function error($what, $title = '', $isFatal = false) {
+    public static function error($what, $title = '', $isFatal = false)
+    {
         /**
          * @todo This needs to be changed to actually send the mail.
          */
@@ -211,7 +235,8 @@ class TaskServer {
     /**
      * Connect to our database
      */
-    private function connectToDatabase() {
+    private function connectToDatabase()
+    {
         $this->db = new database();
     }
 
@@ -219,43 +244,47 @@ class TaskServer {
      * This function will process the incoming signals
      * @param  int Signal number
      */
-    public function signalHandler($signal) {
+    public function signalHandler($signal)
+    {
         // Disable signal processing for the moment, just dump the signal to email and quit.
         self::error("UNIX signal received", "Signal " . $signal . " as received.", true);
 
         // Process signals here
         switch ($signal) {
             // handle shutdown tasks
-            case SIGTERM : {
-                    /**
-                     * TODO
-                     * Implement what happens when we receive our shutdown call
-                     */
-                    exit();
+            case SIGTERM :
+                {
+                /**
+                 * TODO
+                 * Implement what happens when we receive our shutdown call
+                 */
+                exit();
                 }
                 exit();
             // handle restart tasks
-            case SIGHUP : {
-                    /**
-                     * TODO
-                     * Implement what happens when we receive our the restart call
-                     */
-                    exit();
+            case SIGHUP :
+                {
+                /**
+                 * TODO
+                 * Implement what happens when we receive our the restart call
+                 */
+                exit();
                 }
                 break;
             default :
-            /**
-             * TODO
-             * Find out more about UNIX signals
-             * Implement the rest of the signals
-             */
+                /**
+                 * TODO
+                 * Find out more about UNIX signals
+                 * Implement the rest of the signals
+                 */
         }
     }
 
     /**
      * Register signal handlers
      */
-    private function registerSignalHandlers() {
+    private function registerSignalHandlers()
+    {
         // Register general used messages
         pcntl_signal(SIGTERM, array('TaskServer', 'signalHandler'));
         pcntl_signal(SIGHUP, array('TaskServer', "signalHandler"));
@@ -266,7 +295,8 @@ class TaskServer {
      * Get what is the que status right now
      * @return array   queCount, nextJobTime How many jobs are in que, when is the next job due?
      */
-    public function getQueInfo() {
+    public function getQueInfo()
+    {
         // get the information we need about the task que
         $query = 'SELECT COUNT(*) AS \'queCount\', (SELECT `tasks_execute` FROM tasks WHERE `tasks_status` = \'new\' ORDER BY `tasks_execute` LIMIT 1) AS \'nextJobTime\' FROM tasks';
 
@@ -283,7 +313,8 @@ class TaskServer {
      * @param  int If we have jobs from the past, what is the min period of sleep
      * @return int Sleep period in seconds
      */
-    public function getSleepPeriod($normalSleep = 45, $recoverMinSleep = 5) {
+    public function getSleepPeriod($normalSleep = 45, $recoverMinSleep = 5)
+    {
         // normaly we should sleep our regular sleep
         $sleep = $normalSleep;
 
@@ -335,7 +366,7 @@ class TaskServer {
         }
 
         // Wait one more sec
-        $nextJobEvent = (int) $nextJobEvent + 1;
+        $nextJobEvent = (int)$nextJobEvent + 1;
 
         // If job should have occured already (have we been down?) then let the server take its breath
         if ($nextJobEvent < $recoverMinSleep) {
@@ -351,7 +382,8 @@ class TaskServer {
      * Use the shared memory in order to let our web server companion know about our status :)
      * @return void
      */
-    private function updateServerStatus() {
+    private function updateServerStatus()
+    {
         $result = array();
 
         foreach ($this->activeThreads as $jobType => $jobs) {
@@ -366,13 +398,17 @@ class TaskServer {
             foreach ($jobs as $jobId => $job) {
                 // Get the job status
                 switch ($job->serverInfo->status) {
-                    case JobServer::UNDEFINED : $result[$jobType][] = 'U';
+                    case JobServer::UNDEFINED :
+                        $result[$jobType][] = 'U';
                         break;
-                    case JobServer::RUNNING : $result[$jobType][] = 'W';
+                    case JobServer::RUNNING :
+                        $result[$jobType][] = 'W';
                         break;
-                    case JobServer::FINISHED : $result[$jobType][] = 'F';
+                    case JobServer::FINISHED :
+                        $result[$jobType][] = 'F';
                         break;
-                    default : $result[$jobType][] = 'E';
+                    default :
+                        $result[$jobType][] = 'E';
                 }
             }
         }
@@ -414,7 +450,8 @@ class TaskServer {
      * @param  int     How many times should we retry the current job before aborting it
      * @param  int     How much should we be waiting for until we retry the job
      */
-    public function registerJobType($jobName, $parallelThreads = 5, $jobTimeout = 60, $retryCount = 3, $retryPause = 120) {
+    public function registerJobType($jobName, $parallelThreads = 5, $jobTimeout = 60, $retryCount = 3, $retryPause = 120)
+    {
         // check to see if we have a job server already registered for this job type
         if (array_key_exists($jobName, $this->registeredServers)) {
             self::error('Unable to register a new job server type as the server already exists: ' . $jobName, 'job already registered');
@@ -454,7 +491,8 @@ class TaskServer {
      * This will retrive all the jobs ids from the database and group them by their type
      * @return int Number of jobs grouped by type
      */
-    private function getPendingJobsByType() {
+    private function getPendingJobsByType()
+    {
         // Fetch the info from the database
         $query = 'SELECT `tasks_id`, `tasks_job_type`
                 FROM `tasks`
@@ -485,7 +523,8 @@ class TaskServer {
     /**
      * This is used to add new functions to the job que
      */
-    private function addJobsToQue() {
+    private function addJobsToQue()
+    {
         // Get the list of pending jobs
         $pendingJobs = $this->getPendingJobsByType();
 
@@ -496,7 +535,8 @@ class TaskServer {
 
             // Check to see if we've reached the limit for this job type
             if ($jobThreads >= $serverType->parallelThreads ||
-                !array_key_exists($serverType->jobType, $pendingJobs)) {
+                !array_key_exists($serverType->jobType, $pendingJobs)
+            ) {
                 // And skip to the next job type if so
                 continue;
             }
@@ -505,7 +545,8 @@ class TaskServer {
             foreach ($pendingJobs[$serverType->jobType] as $jobId) {
                 // Check to see if this job is not in the que already and we have enough slots for this job type
                 if (!array_key_exists($jobId, $this->activeThreads[$serverType->jobType]) &&
-                    $jobThreads < $serverType->parallelThreads) {
+                    $jobThreads < $serverType->parallelThreads
+                ) {
                     // Since we won't have a task running
                     $jobType = $serverType->jobType;
                     $this->activeThreads[$serverType->jobType][$jobId] = new $jobType($jobId, self::$debugMode);
@@ -534,10 +575,11 @@ class TaskServer {
 
     /**
      * This is used to clear the que from dead or finished jobs.
-     * @param	string	Job type
-     * @param	int		Job id
+     * @param    string    Job type
+     * @param    int        Job id
      */
-    private function stopDeadJob($jobType, $jobId) {
+    private function stopDeadJob($jobType, $jobId)
+    {
         $jobType = strtolower($jobType);
         $this->activeThreads[$jobType][$jobId]->closeJob(true);
 
@@ -550,10 +592,11 @@ class TaskServer {
 
     /**
      * This is used to stop a broken job.
-     * @param	string	Job type
-     * @param	int		Job id
+     * @param    string    Job type
+     * @param    int        Job id
      */
-    private function stopBrokenJob($jobType, $jobId) {
+    private function stopBrokenJob($jobType, $jobId)
+    {
         $jobType = strtolower($jobType);
         echo "stopBrokenJob \n";
         $this->activeThreads[$jobType][$jobId]->closeJob();
@@ -561,10 +604,11 @@ class TaskServer {
 
     /**
      * This is used to restart a broken job.
-     * @param	string	Job type
-     * @param	int		Job id
+     * @param    string    Job type
+     * @param    int        Job id
      */
-    private function restartBrokenJob($jobType, $jobId) {
+    private function restartBrokenJob($jobType, $jobId)
+    {
         $jobType = strtolower($jobType);
         echo "restartBrokenJob \n";
         $this->activeThreads[$jobType][$jobId]->startJob($jobId);
@@ -572,10 +616,11 @@ class TaskServer {
 
     /**
      * This is used to mark a job as finished in the server.
-     * @param	string	Job type
-     * @param	int		Job id
+     * @param    string    Job type
+     * @param    int        Job id
      */
-    private function stopFinishedJob($jobType, $jobId) {
+    private function stopFinishedJob($jobType, $jobId)
+    {
         $jobType = strtolower($jobType);
         echo "stopFinishedJob \n";
         unset($this->activeThreads[$jobType][$jobId]);
@@ -584,7 +629,8 @@ class TaskServer {
     /**
      * This will check if our active jobs should be restarted or stopped
      */
-    private function processActiveJobs() {
+    private function processActiveJobs()
+    {
         // Get the current time
         $time = microtime(true);
 
@@ -607,20 +653,20 @@ class TaskServer {
                 switch (true) {
                     // Check to see if a job has passed it's time and retry count
                     case ($jobIsRunning &&
-                    $job->serverInfo->retryCount >= $this->registeredServers[$jobType]->retryCount &&
-                    $time - $job->serverInfo->started > $this->registeredServers[$jobType]->jobTimeout) :
+                          $job->serverInfo->retryCount >= $this->registeredServers[$jobType]->retryCount &&
+                          $time - $job->serverInfo->started > $this->registeredServers[$jobType]->jobTimeout) :
                         $this->stopDeadJob($jobType, $jobId);
                         break;
 
                     // Check to see if the job should be stopped
                     case ($jobIsRunning &&
-                    $time - $job->serverInfo->started > $this->registeredServers[$jobType]->jobTimeout) :
+                          $time - $job->serverInfo->started > $this->registeredServers[$jobType]->jobTimeout) :
                         $this->stopBrokenJob($jobType, $jobId);
                         break;
 
                     // Check to see if the job should be started again
                     case (!$jobIsRunning &&
-                    $time - $job->serverInfo->stopped > $this->registeredServers[$jobType]->retryPause) :
+                          $time - $job->serverInfo->stopped > $this->registeredServers[$jobType]->retryPause) :
                         $this->restartBrokenJob($jobType, $jobId);
                         break;
 
@@ -638,7 +684,8 @@ class TaskServer {
      * It should check on every tick if the active jobs are finished or with errors
      * and launch new jobs.
      */
-    public function processJobs() {
+    public function processJobs()
+    {
         $this->processActiveJobs();
 
         $this->addJobsToQue();
@@ -652,10 +699,11 @@ class TaskServer {
      * processing   -> the job is currently running
      * finished     -> the job is finished
      * forcedstoped -> the job was running for too much time
-     * @param int		The id of our job
-     * @param string 	The status of our job
+     * @param int        The id of our job
+     * @param string     The status of our job
      */
-    public static function changeJobStatus($jobId, $status) {
+    public static function changeJobStatus($jobId, $status)
+    {
         switch ($status) {
             case 'processing' :
                 self::jobIsProcessing($jobId);
@@ -664,16 +712,17 @@ class TaskServer {
                 self::jobIsFinished($jobId);
                 break;
             case 'forcedstoped' :
-                self::jobIsForcedStoped($jobId);
+                self::jobIsForcedStopped($jobId);
                 break;
         }
     }
 
     /**
      * Mark a job as processing
-     * @param int	Job id
+     * @param int    Job id
      */
-    public static function jobIsProcessing($jobId) {
+    public static function jobIsProcessing($jobId)
+    {
         // Make a connection to the database
         $db = new database();
 
@@ -692,9 +741,10 @@ class TaskServer {
 
     /**
      * Mark a job as finished
-     * @param int	Job id
+     * @param int    Job id
      */
-    private static function jobIsFinished($jobId) {
+    private static function jobIsFinished($jobId)
+    {
         // Make a connection to the database
         $db = new database();
 
@@ -722,9 +772,10 @@ class TaskServer {
 
     /**
      * Mark a job as broken
-     * @param int	Job id
+     * @param int    Job id
      */
-    private static function jobIsForcedStoped($jobId) {
+    private static function jobIsForcedStopped($jobId)
+    {
         // Make a connection to the database
         $db = new database();
 
@@ -752,9 +803,10 @@ class TaskServer {
 
     /**
      * Create our Task Server
-     * @param	boolean	If we are running in debug mode or not
+     * @param    boolean    If we are running in debug mode or not
      */
-    public function __construct($debug = false) {
+    public function __construct($debug = false)
+    {
         // Register our classes for independent servers separately
         // We only want to autoload classes from our path
         set_include_path('.:./Jobs/');
@@ -803,7 +855,8 @@ class TaskServer {
     /**
      * Here we say bye bye to our server
      */
-    public function __destruct() {
+    public function __destruct()
+    {
         // We shouldn't reach here but if we do and we are not comming from a error
         if (!self::$fatalError) {
             self::error('Unexpected shutdown call', 'unxepected shutdown call');

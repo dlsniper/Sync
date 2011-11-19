@@ -7,7 +7,8 @@
  * @author Florin Patan
  * @copyright Florin Patan
  */
-class Playlist extends JobServer {
+class Playlist extends JobServer
+{
     const JOB = 'playlist';
     private static $URLAPI = 'http://gdata.youtube.com/feeds/api/playlists/[location]?start-index=[start]&max-results=20';
     private static $URLPage = 'http://www.youtube.com/view_play_list?p=[location]';
@@ -18,7 +19,8 @@ class Playlist extends JobServer {
      * @param  boolean Should we crash if we couldn't add the job or just send the error?
      * @return int     Id of the inserted job
      */
-    public static function addJob($options, $fatalIfError) {
+    public static function addJob($options, $fatalIfError)
+    {
         // Make the options storable in the database
         $options = serialize($options);
 
@@ -49,7 +51,8 @@ class Playlist extends JobServer {
      * @param  string  Id of the playlist
      * @return array   Ids
      */
-    private static function fetchPage($playlistID) {
+    private static function fetchPage($playlistID)
+    {
         // Compose the URL
         $url = str_replace('[location]', $playlistID, self::$URLPage);
 
@@ -77,7 +80,8 @@ class Playlist extends JobServer {
      * @param  string  Id of the playlist
      * @return array   Ids
      */
-    private static function fetchAPI($playlistID) {
+    private static function fetchAPI($playlistID)
+    {
         TaskServer::error('Playlist::fetchAPI is not completed', 'incomplete function call', true);
 
         // Compose the URL
@@ -93,7 +97,7 @@ class Playlist extends JobServer {
             $content = simplexml_load_string($contents['content']);
 
             foreach ($content->entry as $entry) {
-                $titles[] = (string) $entry->title;
+                $titles[] = (string)$entry->title;
             }
 
             unset($content);
@@ -109,7 +113,8 @@ class Playlist extends JobServer {
      * Process our job
      * @param  int Our job id
      */
-    public static function processJob($jobId) {
+    public static function processJob($jobId)
+    {
         // Let the server know we are about to do our job
         $this->updateStatus('processing');
 
@@ -164,7 +169,8 @@ class Playlist extends JobServer {
      * @param  int     How much should we be waiting for until we retry the job
      * @return jobServerOption
      */
-    public static function getJobServerDetails($parallelThreads = 5, $jobTimeout = 60, $retryCount = 3, $retryPause = 120) {
+    public static function getJobServerDetails($parallelThreads = 5, $jobTimeout = 60, $retryCount = 3, $retryPause = 120)
+    {
         self::$serverOption = new jobServerOption(self::JOB, $parallelThreads, $jobTimeout, $retryCount, $retryPause);
         return self::$serverOption;
     }
@@ -175,7 +181,8 @@ class Playlist extends JobServer {
      * @param   boolean    Debug mode?
      * @return  jobServer  Job
      */
-    public function __construct($jobId, $debugMode) {
+    public function __construct($jobId, $debugMode)
+    {
         return parent::__construct(self::JOB, $jobId, $debugMode);
     }
 

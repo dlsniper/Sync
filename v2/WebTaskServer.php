@@ -9,7 +9,8 @@
  * @copyright Florin Patan
  * @todo Implement extended server status
  */
-class WebTaskServer {
+class WebTaskServer
+{
 
     /**
      * On what interface should we listen to?
@@ -18,7 +19,7 @@ class WebTaskServer {
     private $host = 0;
     /**
      * On what port should we listen to?
-     * @var	int
+     * @var    int
      */
     private $port = 8088;
     /**
@@ -44,11 +45,12 @@ class WebTaskServer {
 
     /**
      * Print the response page to the client of the webserver
-     * @param	String	Type of the response, html or json
-     * @param	String	Title of the page if the type is text/html
-     * @param	String	Response content
+     * @param    String    Type of the response, html or json
+     * @param    String    Title of the page if the type is text/html
+     * @param    String    Response content
      */
-    private function printPage($pageType, $pageTitle, $pageContent) {
+    private function printPage($pageType, $pageTitle, $pageContent)
+    {
         if ($pageType == "json") {
             // Set the page type of the response
             $pageType = "application/json";
@@ -132,7 +134,8 @@ class WebTaskServer {
      * Get the status of the TaskServer
      * @return string
      */
-    private function getTaskServerStatus() {
+    private function getTaskServerStatus()
+    {
         $result = '';
 
         $result .= '<pre>';
@@ -189,7 +192,7 @@ class WebTaskServer {
             $result .= 'Couldn\'t fetch the job status, please try again.<br/>';
         }
 
-        $result .='</pre>';
+        $result .= '</pre>';
 
         return $result;
     }
@@ -197,7 +200,8 @@ class WebTaskServer {
     /**
      * Run the webserver and the taskserver
      */
-    public function run() {
+    public function run()
+    {
         // The time of the current sleep (task sever related)
         $sleepTime = 0;
 
@@ -299,17 +303,18 @@ class WebTaskServer {
 
     /**
      * Create our Task Server
-     * @param	boolean	If we are running in debug mode or not
+     * @param    boolean    If we are running in debug mode or not
      */
-    public function __construct($debug = false) {
+    public function __construct($debug = false)
+    {
         // Start the web server
         // No timeouts, flush content immediatly
         set_time_limit(0);
         ob_implicit_flush();
 
         // Init the clients
-//        for($i=0; $i<$this->maxClients; $i++)
-//            $this->client[$i]['sock'] = null;
+        //        for($i=0; $i<$this->maxClients; $i++)
+        //            $this->client[$i]['sock'] = null;
         // Create socket
         $this->sock = socket_create(AF_INET, SOCK_STREAM, 0) or die("Could not create socket");
 
@@ -320,14 +325,15 @@ class WebTaskServer {
         socket_listen($this->sock) or die("Could not set up socket listener");
 
         // Start the task server
-//        parent::__construct($debug);
+        //        parent::__construct($debug);
     }
 
     /**
      * Destruct the web server when we are shutting down
      * @see TaskServer::__destruct()
      */
-    public function __destruct() {
+    public function __destruct()
+    {
         for ($i = 0; $i < $this->maxClients; $i++) {
             // Disconnect clients
             if ($this->client[$i]['sock'] != null) {

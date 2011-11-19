@@ -19,7 +19,8 @@ $debugMode = true;
 // Get our servers code
 include_once ('./WebTaskServer.php');
 
-function rLog($msg) {
+function rLog($msg)
+{
     $msg = "[" . date('Y-m-d H:i:s') . "] " . $msg;
     print($msg . "\n");
 }

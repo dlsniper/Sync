@@ -7,7 +7,8 @@
  * @author Florin Patan
  * @copyright Florin Patan
  */
-abstract class JobServer {
+abstract class JobServer
+{
 
     /**
      * Path to the php exec
@@ -44,14 +45,14 @@ abstract class JobServer {
      * @var    array   cURL related options
      */
     protected static $curlOptions = array(CURLOPT_RETURNTRANSFER => true, // return web page
-        CURLOPT_HEADER => false, // don't return headers
-        CURLOPT_FOLLOWLOCATION => true, // follow redirects
-        CURLOPT_ENCODING => "", // handle all encodings
-        CURLOPT_USERAGENT => "Opera/9.80 (Windows NT 6.1; U; en) Presto/2.8.131 Version/11.10", // who am i but a ghost
-        CURLOPT_AUTOREFERER => true, // set referer on redirect
-        CURLOPT_CONNECTTIMEOUT => 10, // timeout on connect
-        CURLOPT_TIMEOUT => 10, // timeout on response
-        CURLOPT_MAXREDIRS => 10); // stop after 10 redirects
+                                          CURLOPT_HEADER => false, // don't return headers
+                                          CURLOPT_FOLLOWLOCATION => true, // follow redirects
+                                          CURLOPT_ENCODING => "", // handle all encodings
+                                          CURLOPT_USERAGENT => "Opera/9.80 (Windows NT 6.1; U; en) Presto/2.8.131 Version/11.10", // who am i but a ghost
+                                          CURLOPT_AUTOREFERER => true, // set referer on redirect
+                                          CURLOPT_CONNECTTIMEOUT => 10, // timeout on connect
+                                          CURLOPT_TIMEOUT => 10, // timeout on response
+                                          CURLOPT_MAXREDIRS => 10); // stop after 10 redirects
     //CURLOPT_ENCODING       => "deflate, gzip, x-gzip, identity, *;q=0", //
     /**
      * Debug mode
@@ -78,7 +79,8 @@ abstract class JobServer {
      * @param  string  URL
      * @return string  Page contents
      */
-    protected static function fetchURL($url) {
+    protected static function fetchURL($url)
+    {
         // cURL magic
         $ch = curl_init($url);
         curl_setopt_array($ch, self::$curlOptions);
@@ -100,10 +102,11 @@ abstract class JobServer {
 
     /**
      * Start our job
-     * @param 	int				The id of our job
-     * @return	jobServerInfo	Information about our job
+     * @param     int                The id of our job
+     * @return    jobServerInfo    Information about our job
      */
-    protected function startJob() {
+    protected function startJob()
+    {
         // We are going to use this alot
         $jobId = $this->serverInfo->id;
 
@@ -122,7 +125,7 @@ abstract class JobServer {
         // pass information to our job
         $env['jobId'] = $jobId;
         $env['jobType'] = self::$serverOption->jobType;
-        $env['jobDebug'] = (string) $this->debugMode;
+        $env['jobDebug'] = (string)$this->debugMode;
 
         // Create our process
         $this->serverInfo->pid = proc_open($this->phpPath . ' ' . __DIR__ . '/job.php', $pipesDescriptor, $this->pipes, $cwd, $env);
@@ -149,7 +152,8 @@ abstract class JobServer {
      * Check if our job is still running or not
      * @return boolean Status of our job
      */
-    protected function isRunning() {
+    protected function isRunning()
+    {
         $status = @proc_get_status($this->serverInfo->pid);
 
         return $status['running'];
@@ -159,7 +163,8 @@ abstract class JobServer {
      * Get the output of the job
      * @return string  Output
      */
-    protected function getOutput() {
+    protected function getOutput()
+    {
         $result = array();
 
         foreach ($this->pipes as $pipe) {
@@ -174,7 +179,8 @@ abstract class JobServer {
      * @param  boolean Kill the job
      * @return array   Exit code, Output pipe, Error pipe
      */
-    protected function closeJob($kill = false) {
+    protected function closeJob($kill = false)
+    {
         // Get contents of our pipes
         $writePipe = $this->pipes[1];
         $errorPipe = $this->pipes[2];
@@ -219,7 +225,8 @@ abstract class JobServer {
      * Update the status of the job across the server and internally
      * @param string $status
      */
-    protected function updateStatus($status = JobServer::UNDEFINED) {
+    protected function updateStatus($status = JobServer::UNDEFINED)
+    {
         $this->serverInfo->status = $status;
         TaskServer::changeJobStatus($this->serverInfo->id, $status);
     }
@@ -231,7 +238,8 @@ abstract class JobServer {
      * @param  boolean         Debug mode?
      * @return JobServerInfo   Return the job object that is going to be launched
      */
-    public function __construct($jobType, $jobId, $debugMode = false) {
+    public function __construct($jobType, $jobId, $debugMode = false)
+    {
 
         // Are we in debug mode?
         $this->debugMode = $debugMode;
@@ -254,7 +262,8 @@ abstract class JobServer {
     /**
      * Clean our mess
      */
-    public function __destruct() {
+    public function __destruct()
+    {
         // If our job is still running the close it
         if (is_resource($this->serverInfo->pid)) {
             $this->closeJob(true);

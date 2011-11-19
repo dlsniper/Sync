@@ -41,66 +41,75 @@
  * @link http://code.google.com/p/jaxl
  */
 
-    /**
-     * XEP-0016 : Privacy Lists
-    */
-    class JAXL0016 {
+/**
+ * XEP-0016 : Privacy Lists
+ */
+class JAXL0016
+{
 
-        public static $ns = 'jabber:iq:privacy';
+    public static $ns = 'jabber:iq:privacy';
 
-        public static function init($jaxl) {
-            $jaxl->features[] = self::$ns;
+    public static function init($jaxl)
+    {
+        $jaxl->features[] = self::$ns;
 
-            JAXLXml::addTag('iq', 'activeList', '//iq/query/active/@name');
-            JAXLXml::addTag('iq', 'defaultList', '//iq/query/default/@name');
-            JAXLXml::addTag('iq', 'listName', '//iq/query/list/@name');
-            JAXLXml::addTag('iq', 'listItemType', '//iq/query/list/item/@type');
-            JAXLXml::addTag('iq', 'listItemValue', '//iq/query/list/item/@value');
-            JAXLXml::addTag('iq', 'listItemAction', '//iq/query/list/item/@action');
-            JAXLXml::addTag('iq', 'listItemOrder', '//iq/query/list/item/@order');
-            JAXLXml::addTag('iq', 'listItemChild', '//iq/query/list/item/*/name()');
-        }
+        JAXLXml::addTag('iq', 'activeList', '//iq/query/active/@name');
+        JAXLXml::addTag('iq', 'defaultList', '//iq/query/default/@name');
+        JAXLXml::addTag('iq', 'listName', '//iq/query/list/@name');
+        JAXLXml::addTag('iq', 'listItemType', '//iq/query/list/item/@type');
+        JAXLXml::addTag('iq', 'listItemValue', '//iq/query/list/item/@value');
+        JAXLXml::addTag('iq', 'listItemAction', '//iq/query/list/item/@action');
+        JAXLXml::addTag('iq', 'listItemOrder', '//iq/query/list/item/@order');
+        JAXLXml::addTag('iq', 'listItemChild', '//iq/query/list/item/*/name()');
+    }
 
-        public static function getListNames($jaxl, $callback) {
-            $payload = '<query xmlns="'.self::$ns.'"/>';
-            return XMPPSend::iq($jaxl, 'get', false, false, $callback);
-        }
+    public static function getListNames($jaxl, $callback)
+    {
+        $payload = '<query xmlns="' . self::$ns . '"/>';
+        return XMPPSend::iq($jaxl, 'get', false, false, $callback);
+    }
 
-        public static function getList($jaxl, $list, $callback) {
-            $payload = '<query xmlns="'.self::$ns.'">';
-            $payload .= '<list name="'.$list.'"/>';
-            $payload .= '</query>';
-            return XMPPSend::iq($jaxl, 'get', false, false, $callback);
-        }
+    public static function getList($jaxl, $list, $callback)
+    {
+        $payload = '<query xmlns="' . self::$ns . '">';
+        $payload .= '<list name="' . $list . '"/>';
+        $payload .= '</query>';
+        return XMPPSend::iq($jaxl, 'get', false, false, $callback);
+    }
 
-        public static function setActiveList($jaxl, $list, $callback) {
-            $payload = '<query xmlns="'.self::$ns.'">';
-            if($list) $payload .= '<active name="'.$list.'"/>';
-            else $payload .= '<active/>';
-            $payload .= '</query>';
-            return XMPPSend::iq($jaxl, 'set', false, false, $callback);
-        }
+    public static function setActiveList($jaxl, $list, $callback)
+    {
+        $payload = '<query xmlns="' . self::$ns . '">';
+        if ($list) $payload .= '<active name="' . $list . '"/>';
+        else $payload .= '<active/>';
+        $payload .= '</query>';
+        return XMPPSend::iq($jaxl, 'set', false, false, $callback);
+    }
 
-        public static function setDefaultList($jaxl, $list, $callback) {
-            $payload = '<query xmlns="'.self::$ns.'">';
-            if($list) $payload .= '<default name="'.$list.'"/>';
-            else $payload .= '<default/>';
-            $payload .= '</query>';
-            return XMPPSend::iq($jaxl, 'set', false, false, $callback);
-        }
+    public static function setDefaultList($jaxl, $list, $callback)
+    {
+        $payload = '<query xmlns="' . self::$ns . '">';
+        if ($list) $payload .= '<default name="' . $list . '"/>';
+        else $payload .= '<default/>';
+        $payload .= '</query>';
+        return XMPPSend::iq($jaxl, 'set', false, false, $callback);
+    }
 
-        public static function editList() {
-
-        }
-
-        public static function ackListPush() {
-
-        }
-
-        public static function removeList() {
-
-        }
+    public static function editList()
+    {
 
     }
+
+    public static function ackListPush()
+    {
+
+    }
+
+    public static function removeList()
+    {
+
+    }
+
+}
 
 ?>

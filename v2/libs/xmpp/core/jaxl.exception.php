@@ -1,5 +1,5 @@
 <?php
-/** 
+/**
  * Jaxl (Jabber XMPP Library)
  *
  * Copyright (c) 2009-2010, Abhinav Singh <me@abhinavsingh.com>.
@@ -33,7 +33,7 @@
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * @package jaxl
  * @subpackage core
  * @author Abhinav Singh <me@abhinavsingh.com>
@@ -41,15 +41,17 @@
  * @link http://code.google.com/p/jaxl
  */
 
-    /**
-     * Jaxl Exception Class
-    */
-    class JAXLException extends Exception {
+/**
+ * Jaxl Exception Class
+ */
+class JAXLException extends Exception
+{
 
-        public function __construct($message, $code=0) {
-            parent::__construct($message, $code);
-        }
-
+    public function __construct($message, $code = 0)
+    {
+        parent::__construct($message, $code);
     }
+
+}
 
 ?>

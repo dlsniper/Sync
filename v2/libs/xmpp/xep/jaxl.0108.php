@@ -41,27 +41,30 @@
  * @link http://code.google.com/p/jaxl
  */
 
-    /**
-     * XEP-0108 : User Activity
-    */
-    class JAXL0108 {
+/**
+ * XEP-0108 : User Activity
+ */
+class JAXL0108
+{
 
-        public static $ns = 'http://jabber.org/protocol/activity';
+    public static $ns = 'http://jabber.org/protocol/activity';
 
-        public static function init($jaxl) {
-            // requires PEP XEP
-            $jaxl->requires('JAXL0163');
+    public static function init($jaxl)
+    {
+        // requires PEP XEP
+        $jaxl->requires('JAXL0163');
 
-            // update client feature list
-            $jaxl->features[] = self::$ns;
+        // update client feature list
+        $jaxl->features[] = self::$ns;
 
-            JAXLXml::addTag('message', 'activity', '//message/event/items/item/activity/@xmlns');
-        }
+        JAXLXml::addTag('message', 'activity', '//message/event/items/item/activity/@xmlns');
+    }
 
-        public static function publishActivity($jaxl, $from, $item) {
-            
-        }
+    public static function publishActivity($jaxl, $from, $item)
+    {
 
     }
+
+}
 
 ?>

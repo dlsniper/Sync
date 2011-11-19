@@ -20,35 +20,33 @@ function termsParser($terms)
     }
 
     $terms = strtolower($terms);
-    if(strpos($terms, " ") !== false)
-    {
+    if (strpos($terms, " ") !== false) {
         $search = array(
-        	"@\s+or\s+@",
-        	"@\s+and\s+@",
-        	"@'@",
-        	"@\s+@");
+            "@\s+or\s+@",
+            "@\s+and\s+@",
+            "@'@",
+            "@\s+@");
         $replace = array(
-        	" ",
-        	" ",
-        	'"',
-        	" ");
+            " ",
+            " ",
+            '"',
+            " ");
         $terms = preg_replace($search, $replace, $terms);
         $terms = preg_replace_callback("@\"(\w+\s*)+\"@", "space_replacer", $terms);
         $terms = explode(" ", $terms);
         $quote = array();
         $minus = array();
-        $cnt   = count($terms);
-        for($i = 0; $i < $cnt; $i++)
+        $cnt = count($terms);
+        for ($i = 0; $i < $cnt; $i++)
         {
             $stletter = $terms[$i];
-            if($stletter[0] == '"')
-            {
+            if ($stletter[0] == '"') {
                 $t = array_splice($terms, $i, 1);
                 $quote[] = $t[0];
                 $i--;
                 $cnt--;
             }
-            elseif($stletter[0] == "-")
+            elseif ($stletter[0] == "-")
             {
                 $t = array_splice($terms, $i, 1);
                 $minus[] = $t[0];
@@ -57,24 +55,22 @@ function termsParser($terms)
             }
         }
 
-        $terms = "((".implode(" OR ", $terms).")";
-        if(count($quote) > 0)
-        {
+        $terms = "((" . implode(" OR ", $terms) . ")";
+        if (count($quote) > 0) {
             $quote = array_map("space_replacer2", $quote);
-            $terms .= " AND (".implode(" AND ", $quote).")";
+            $terms .= " AND (" . implode(" AND ", $quote) . ")";
         }
 
-        if(count($minus) > 0)
-        {
+        if (count($minus) > 0) {
             $minus = array_map("space_replacer2", $minus);
-            $terms .= " AND (".implode(" AND ", $minus).")";
+            $terms .= " AND (" . implode(" AND ", $minus) . ")";
         }
 
         $terms .= ")";
     }
     else
     {
-        $terms = "(".$terms.")";
+        $terms = "(" . $terms . ")";
     }
 
     return $terms;

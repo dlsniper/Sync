@@ -41,28 +41,31 @@
  * @link http://code.google.com/p/jaxl
  */
 
-    /**
-     * XEP-0153: vCard-Based Avatars
-    */
-    class JAXL0153 {
+/**
+ * XEP-0153: vCard-Based Avatars
+ */
+class JAXL0153
+{
 
-        public static $ns = 'vcard-temp:x:update';
+    public static $ns = 'vcard-temp:x:update';
 
-        public static function init($jaxl) {
-
-        }
-
-        public static function getUpdateData($jaxl, $hash=false) {
-            $xml = '<x xmlns="'.self::$ns.'">';
-            if($hash) {
-                $xml .= '<photo>';
-                if($hash !== true) $xml .= $hash;
-                $xml .= '</photo>';
-            }
-            $xml .= '</x>';
-            return $xml;
-        }
+    public static function init($jaxl)
+    {
 
     }
+
+    public static function getUpdateData($jaxl, $hash = false)
+    {
+        $xml = '<x xmlns="' . self::$ns . '">';
+        if ($hash) {
+            $xml .= '<photo>';
+            if ($hash !== true) $xml .= $hash;
+            $xml .= '</photo>';
+        }
+        $xml .= '</x>';
+        return $xml;
+    }
+
+}
 
 ?>

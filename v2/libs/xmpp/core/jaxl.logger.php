@@ -41,31 +41,35 @@
  * @link http://code.google.com/p/jaxl
  */
 
-    /**
-     * Jaxl Logging Class
-    */
-    class JAXLog {
-        
-        public static function log($log, $level=1, $jaxl=false) {
-            if($level <= $jaxl->logLevel
-            ||($level == 0 && $jaxl->mode == "cli")) {
-                $log = '['.$jaxl->uid.':'.$jaxl->pid.':'.$jaxl->clock.'] '.date('Y-m-d H:i:s')." - ".$log;
-                error_log($log."\n\n", 3, $jaxl->logPath);
-            }
-            return true;
-        }
+/**
+ * Jaxl Logging Class
+ */
+class JAXLog
+{
 
-        public static function logRotate($jaxl) {
-            if(copy($jaxl->logPath, $jaxl->logPath.'.'.date('Y-m-d-H-i-s')))
-                if($jaxl->mode == 'cli')
-                    print '['.$jaxl->pid.':'.$jaxl->uid.'] '.date('Y-m-d H:i:s')." - Successfully rotated log file...\n";
-            
-            $fh = fopen($jaxl->logPath, "r+");
-            ftruncate($fh, 1);
-            rewind($fh);
-            fclose($fh);
+    public static function log($log, $level = 1, $jaxl = false)
+    {
+        if ($level <= $jaxl->logLevel
+            || ($level == 0 && $jaxl->mode == "cli")
+        ) {
+            $log = '[' . $jaxl->uid . ':' . $jaxl->pid . ':' . $jaxl->clock . '] ' . date('Y-m-d H:i:s') . " - " . $log;
+            error_log($log . "\n\n", 3, $jaxl->logPath);
         }
-
+        return true;
     }
-    
+
+    public static function logRotate($jaxl)
+    {
+        if (copy($jaxl->logPath, $jaxl->logPath . '.' . date('Y-m-d-H-i-s')))
+            if ($jaxl->mode == 'cli')
+                print '[' . $jaxl->pid . ':' . $jaxl->uid . '] ' . date('Y-m-d H:i:s') . " - Successfully rotated log file...\n";
+
+        $fh = fopen($jaxl->logPath, "r+");
+        ftruncate($fh, 1);
+        rewind($fh);
+        fclose($fh);
+    }
+
+}
+
 ?>

@@ -40,42 +40,46 @@
  * @copyright Abhinav Singh
  * @link http://code.google.com/p/jaxl
  */
-    
-    /**
-     * XEP-0092: Software Version
-    */
-    class JAXL0092 {
-        
-        public static $ns = 'jabber:iq:version';
 
-        public static function init($jaxl) {
-            $jaxl->features[] = self::$ns;
-            
-            JAXLXml::addTag('iq', 'softwareName', '//iq/query[@xmlns="'.self::$ns.'"]/name');
-            JAXLXml::addTag('iq', 'softwareVersion', '//iq/query[@xmlns="'.self::$ns.'"]/version');
-            JAXLXml::addTag('iq', 'softwareOS', '//iq/query[@xmlns="'.self::$ns.'"]/os');
-            
-            $jaxl->addPlugin('jaxl_get_iq_get', array('JAXL0092', 'getIq'));
-        }
-        
-        public static function getIq($arr, $jaxl) {
-            if($arr['queryXmlns'] == self::$ns) {
-                $payload = '<query xmlns="'.self::$ns.'">';
-                $payload .= '<name>'.$jaxl->getName().'</name>';
-                $payload .= '<version>'.$jaxl->getVersion().'</version>';
-                $payload .= '<os>'.PHP_OS.'</os>';
-                $payload .= '</query>';
-                
-                return XMPPSend::iq($jaxl, 'result', $payload, $arr['from'], $arr['to'], false, $arr['id']);
-            }
-            return $arr;
-        }
-        
-        public static function getVersion($jaxl, $fromJid, $toJid, $callback) {
-            $payload = '<query xmlns="'.self::$ns.'">';
-            return XMPPSend::iq($jaxl, 'get', $payload, $fromJid, $toJid, $callback);
-        }
-        
+/**
+ * XEP-0092: Software Version
+ */
+class JAXL0092
+{
+
+    public static $ns = 'jabber:iq:version';
+
+    public static function init($jaxl)
+    {
+        $jaxl->features[] = self::$ns;
+
+        JAXLXml::addTag('iq', 'softwareName', '//iq/query[@xmlns="' . self::$ns . '"]/name');
+        JAXLXml::addTag('iq', 'softwareVersion', '//iq/query[@xmlns="' . self::$ns . '"]/version');
+        JAXLXml::addTag('iq', 'softwareOS', '//iq/query[@xmlns="' . self::$ns . '"]/os');
+
+        $jaxl->addPlugin('jaxl_get_iq_get', array('JAXL0092', 'getIq'));
     }
+
+    public static function getIq($arr, $jaxl)
+    {
+        if ($arr['queryXmlns'] == self::$ns) {
+            $payload = '<query xmlns="' . self::$ns . '">';
+            $payload .= '<name>' . $jaxl->getName() . '</name>';
+            $payload .= '<version>' . $jaxl->getVersion() . '</version>';
+            $payload .= '<os>' . PHP_OS . '</os>';
+            $payload .= '</query>';
+
+            return XMPPSend::iq($jaxl, 'result', $payload, $arr['from'], $arr['to'], false, $arr['id']);
+        }
+        return $arr;
+    }
+
+    public static function getVersion($jaxl, $fromJid, $toJid, $callback)
+    {
+        $payload = '<query xmlns="' . self::$ns . '">';
+        return XMPPSend::iq($jaxl, 'get', $payload, $fromJid, $toJid, $callback);
+    }
+
+}
 
 ?>

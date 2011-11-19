@@ -41,23 +41,25 @@
  * @link http://code.google.com/p/jaxl
  */
 
-    /**
-     * XEP-0128: Service Discovery Extensions
-    */
-    class JAXL0128 {
-        
-        public static $ns = 'jabber:x:data';
-        
-        public static function init($jaxl) {
-            $jaxl->features[] = self::$ns;
+/**
+ * XEP-0128: Service Discovery Extensions
+ */
+class JAXL0128
+{
 
-            JAXLXml::addTag('iq', 'xData', '/iq/query/x/@xmlns');
-            JAXLXml::addTag('iq', 'xDataType', '/iq/query/x/@type');
-            JAXLXml::addTag('iq', 'xDataVar', '/iq/query/x/field/@var');
-            JAXLXml::addTag('iq', 'xDataLabel', '/iq/query/x/field/@label');
-            JAXLXml::addTag('iq', 'xDataValue', '/iq/query/x/field/value');
-        }
-        
+    public static $ns = 'jabber:x:data';
+
+    public static function init($jaxl)
+    {
+        $jaxl->features[] = self::$ns;
+
+        JAXLXml::addTag('iq', 'xData', '/iq/query/x/@xmlns');
+        JAXLXml::addTag('iq', 'xDataType', '/iq/query/x/@type');
+        JAXLXml::addTag('iq', 'xDataVar', '/iq/query/x/field/@var');
+        JAXLXml::addTag('iq', 'xDataLabel', '/iq/query/x/field/@label');
+        JAXLXml::addTag('iq', 'xDataValue', '/iq/query/x/field/value');
     }
+
+}
 
 ?>

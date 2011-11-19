@@ -40,40 +40,44 @@
  * @copyright Abhinav Singh
  * @link http://code.google.com/p/jaxl
  */
-    
-    /**
-     * XEP-0202 : Entity Time
-    */  
-    class JAXL0202 {
-        
-        public static $ns = 'urn:xmpp:time';
-        
-        public static function init($jaxl) {
-            $jaxl->features[] = self::$ns;
-            
-            JAXLXml::addTag('iq', 'time', '//iq/time/@xmlns');
-            JAXLXml::addTag('iq', 'timeTZO', '//iq/time/tzo');
-            JAXLXml::addTag('iq', 'timeUTC', '//iq/time/utc');
 
-            $jaxl->addPlugin('jaxl_get_iq_get', array('JAXL0202', 'handleIq'));
-        }
-        
-        public static function getEntityTime($jaxl, $to, $from, $callback) {
-            $payload = '<time xmlns="'.self::$ns.'"/>';
-            return XMPPSend::iq($jaxl, 'get', $payload, $to, $from, $callback);
-        }
-        
-        public static function handleIq($payload, $jaxl) {
-            if(@$payload['time'] == self::$ns) {
-                $entityTime = '<time xmlns="'.self::$ns.'">';
-                $entityTime .= '<tzo>'.date('P').'</tzo>';
-                $entityTime .= '<utc>'.date('Y-m-d').'T'.date('H:i:s').'Z</utc>';
-                $entityTime .= '</time>';
-                return XMPPSend::iq($jaxl, 'result', $entityTime, $payload['from'], $payload['to'], false, $payload['id']);
-            }
-            return $payload;
-        }
-        
+/**
+ * XEP-0202 : Entity Time
+ */
+class JAXL0202
+{
+
+    public static $ns = 'urn:xmpp:time';
+
+    public static function init($jaxl)
+    {
+        $jaxl->features[] = self::$ns;
+
+        JAXLXml::addTag('iq', 'time', '//iq/time/@xmlns');
+        JAXLXml::addTag('iq', 'timeTZO', '//iq/time/tzo');
+        JAXLXml::addTag('iq', 'timeUTC', '//iq/time/utc');
+
+        $jaxl->addPlugin('jaxl_get_iq_get', array('JAXL0202', 'handleIq'));
     }
-    
+
+    public static function getEntityTime($jaxl, $to, $from, $callback)
+    {
+        $payload = '<time xmlns="' . self::$ns . '"/>';
+        return XMPPSend::iq($jaxl, 'get', $payload, $to, $from, $callback);
+    }
+
+    public static function handleIq($payload, $jaxl)
+    {
+        if (@$payload['time'] == self::$ns) {
+            $entityTime = '<time xmlns="' . self::$ns . '">';
+            $entityTime .= '<tzo>' . date('P') . '</tzo>';
+            $entityTime .= '<utc>' . date('Y-m-d') . 'T' . date('H:i:s') . 'Z</utc>';
+            $entityTime .= '</time>';
+            return XMPPSend::iq($jaxl, 'result', $entityTime, $payload['from'], $payload['to'], false, $payload['id']);
+        }
+        return $payload;
+    }
+
+}
+
 ?>

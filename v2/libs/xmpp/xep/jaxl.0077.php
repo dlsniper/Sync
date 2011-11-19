@@ -41,17 +41,19 @@
  * @link http://code.google.com/p/jaxl
  */
 
-    /**
-     * XEP-0077 : In-Band Registration
-    */
-    class JAXL0077 {
+/**
+ * XEP-0077 : In-Band Registration
+ */
+class JAXL0077
+{
 
-        public static $ns = 'jabber:iq:register';
+    public static $ns = 'jabber:iq:register';
 
-        public static function init($jaxl) {
-            $jaxl->features[] = self::$ns;
-        }
-
+    public static function init($jaxl)
+    {
+        $jaxl->features[] = self::$ns;
     }
+
+}
 
 ?>

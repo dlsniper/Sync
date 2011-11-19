@@ -40,28 +40,30 @@
  * @copyright Abhinav Singh
  * @link http://code.google.com/p/jaxl
  */
-    
-    /**
-     * XEP-0203 : Delayed Delivery
-    */
-    class JAXL0203 {
-        
-        public static $ns = 'urn:xmpp:delay';
-                
-        public static function init($jaxl) {
-            // add message specific tag maps
-            JAXLXml::addTag('message', 'offline', '//message/delay/@xmlns');
-            JAXLXml::addTag('message', 'delayFrom', '//message/delay/@from');
-            JAXLXml::addTag('message', 'delayStamp', '//message/delay/@stamp');
-            JAXLXml::addTag('message', 'delayDesc', '//message/delay');
-            
-            // add presence specific tag maps
-            JAXLXml::addTag('presence', 'offline', '//message/delay/@xmlns');
-            JAXLXml::addTag('presence', 'delayFrom', '//message/delay/@from');
-            JAXLXml::addTag('presence', 'delayStamp', '//message/delay/@stamp');
-            JAXLXml::addTag('presence', 'delayDesc', '//message/delay');
-        }   
-        
+
+/**
+ * XEP-0203 : Delayed Delivery
+ */
+class JAXL0203
+{
+
+    public static $ns = 'urn:xmpp:delay';
+
+    public static function init($jaxl)
+    {
+        // add message specific tag maps
+        JAXLXml::addTag('message', 'offline', '//message/delay/@xmlns');
+        JAXLXml::addTag('message', 'delayFrom', '//message/delay/@from');
+        JAXLXml::addTag('message', 'delayStamp', '//message/delay/@stamp');
+        JAXLXml::addTag('message', 'delayDesc', '//message/delay');
+
+        // add presence specific tag maps
+        JAXLXml::addTag('presence', 'offline', '//message/delay/@xmlns');
+        JAXLXml::addTag('presence', 'delayFrom', '//message/delay/@from');
+        JAXLXml::addTag('presence', 'delayStamp', '//message/delay/@stamp');
+        JAXLXml::addTag('presence', 'delayDesc', '//message/delay');
     }
-    
+
+}
+
 ?>

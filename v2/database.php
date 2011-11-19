@@ -3,12 +3,13 @@
 /**
  * Add automatic detection of our host and connect without messing with configs
  * in the source files in the database
- * @package	TaskServer
+ * @package    TaskServer
  * @version 0.1
  * @author Florin Patan
  * @copyright Florin Patan
  */
-class database extends mysqli {
+class database extends mysqli
+{
 
     /**
      * Run the query and get a single result
@@ -16,7 +17,8 @@ class database extends mysqli {
      * @param  boolean Fatal error in case query can't be executed
      * @return object  Query result
      */
-    public function getOne($query, $isFatal = false) {
+    public function getOne($query, $isFatal = false)
+    {
         // Try and run the query
         if ($results = $this->query($query)) {
             // Fetch the result
@@ -39,7 +41,8 @@ class database extends mysqli {
      * @param  boolean Fatal error in case query can't be executed
      * @return object  Query results
      */
-    public function getAll($query, $isFatal = false) {
+    public function getAll($query, $isFatal = false)
+    {
         // Try and run the query
         if ($results = $this->query($query)) {
 
@@ -58,7 +61,8 @@ class database extends mysqli {
      * @param  array   The values
      * @param  boolean Fatal error?
      */
-    public function insert($query, $values, $fatalError = false) {
+    public function insert($query, $values, $fatalError = false)
+    {
         // Create a prepared statement
         if ($stmt = $this->prepare($query)) {
             // Get the type of paramteres
@@ -110,7 +114,8 @@ class database extends mysqli {
      * Connect to the MySQL database automatically depending on the hostname of the current computer
      * @return database
      */
-    public function __construct() {
+    public function __construct()
+    {
         // Detect where are we
         $hostname = php_uname('n');
 
@@ -157,7 +162,8 @@ class database extends mysqli {
     /**
      * Close our database before we go bye bye
      */
-    public function __destruct() {
+    public function __destruct()
+    {
         // Attempt to close our existing connection
         @$this->close();
     }

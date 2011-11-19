@@ -41,46 +41,51 @@
  * @link http://code.google.com/p/jaxl
  */
 
-    /**
-     * XEP-0114: Jabber Component Protocol
-    */
-    class JAXL0114 {
-        
-        public static function init($jaxl) {
-            // initialize working parameter for this jaxl instance
-            $jaxl->comp = array(
-                'host'  =>  false,
-                'pass'  =>  false
-            );
+/**
+ * XEP-0114: Jabber Component Protocol
+ */
+class JAXL0114
+{
 
-            // parse user options
-            $jaxl->comp['host'] = $jaxl->getConfigByPriority(@$jaxl->config['compHost'], "JAXL_COMPONENT_HOST", $jaxl->comp['host']);
-            $jaxl->comp['pass'] = $jaxl->getConfigByPriority(@$jaxl->config['compPass'], "JAXL_COMPONENT_PASS", $jaxl->comp['pass']);
-           
-            // register required callbacks
-            $jaxl->addPlugin('jaxl_post_start', array('JAXL0114', 'handshake'));
-            $jaxl->addPlugin('jaxl_pre_handler', array('JAXL0114', 'preHandler'));
-        }
-        
-        public static function startStream($jaxl, $payload) {
-            $xml = '<stream:stream xmlns="jabber:component:accept" xmlns:stream="http://etherx.jabber.org/streams" to="'.$jaxl->comp['host'].'">';
-            $jaxl->sendXML($xml);
-        }
-        
-        public static function handshake($id, $jaxl) {
-            $hash = strtolower(sha1($id.$jaxl->comp['pass']));
-            $xml = '<handshake>'.$hash.'</handshake>';
-            $jaxl->sendXML($xml);
-        }
+    public static function init($jaxl)
+    {
+        // initialize working parameter for this jaxl instance
+        $jaxl->comp = array(
+            'host' => false,
+            'pass' => false
+        );
 
-        public static function preHandler($xml, $jaxl) {
-            if($xml == '<handshake/>') {
-                $xml = '';
-                $jaxl->executePlugin('jaxl_post_handshake', false);
-            }
-            return $xml;
-        }
-        
+        // parse user options
+        $jaxl->comp['host'] = $jaxl->getConfigByPriority(@$jaxl->config['compHost'], "JAXL_COMPONENT_HOST", $jaxl->comp['host']);
+        $jaxl->comp['pass'] = $jaxl->getConfigByPriority(@$jaxl->config['compPass'], "JAXL_COMPONENT_PASS", $jaxl->comp['pass']);
+
+        // register required callbacks
+        $jaxl->addPlugin('jaxl_post_start', array('JAXL0114', 'handshake'));
+        $jaxl->addPlugin('jaxl_pre_handler', array('JAXL0114', 'preHandler'));
     }
+
+    public static function startStream($jaxl, $payload)
+    {
+        $xml = '<stream:stream xmlns="jabber:component:accept" xmlns:stream="http://etherx.jabber.org/streams" to="' . $jaxl->comp['host'] . '">';
+        $jaxl->sendXML($xml);
+    }
+
+    public static function handshake($id, $jaxl)
+    {
+        $hash = strtolower(sha1($id . $jaxl->comp['pass']));
+        $xml = '<handshake>' . $hash . '</handshake>';
+        $jaxl->sendXML($xml);
+    }
+
+    public static function preHandler($xml, $jaxl)
+    {
+        if ($xml == '<handshake/>') {
+            $xml = '';
+            $jaxl->executePlugin('jaxl_post_handshake', false);
+        }
+        return $xml;
+    }
+
+}
 
 ?>

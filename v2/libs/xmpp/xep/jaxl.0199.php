@@ -41,46 +41,51 @@
  * @link http://code.google.com/p/jaxl
  */
 
-    /**
-     * XEP-0199: XMPP Ping
-    */
-    class JAXL0199 {
-        
-        public static $ns = 'urn:xmpp:ping';
-        
-        public static function init($jaxl) {
-            $jaxl->features[] = self::$ns;
-            
-            $jaxl->pingInterval = 0;
-            $jaxl->pingInterval = $jaxl->getConfigByPriority($jaxl->config['pingInterval'], "JAXL_PING_INTERVAL", $jaxl->pingInterval);
-            if($jaxl->pingInterval > 0) 
-                JAXLCron::add(array('JAXL0199', 'ping'), $jaxl->pingInterval, $jaxl->domain, $jaxl->jid, array('JAXL0199', 'pinged'));
+/**
+ * XEP-0199: XMPP Ping
+ */
+class JAXL0199
+{
 
-            JAXLXml::addTag('iq', 'ping', '//iq/ping/@xmlns');
-            $jaxl->addPlugin('jaxl_get_iq_get', array('JAXL0199', 'handleIq'));
-        }
-        
-        public static function handleIq($payload, $jaxl) {
-            if(@$payload['ping'] == self::$ns) 
-                return XMPPSend::iq($jaxl, 'result', false, $payload['from'], $payload['to'], false, $payload['id']);
-            return $payload;
-        }
-        
-        public static function ping($jaxl, $to, $from, $callback) {
-            if($jaxl->auth) {
-                $payload = "<ping xmlns='urn:xmpp:ping'/>";
-                return XMPPSend::iq($jaxl, 'get', $payload, $to, $from, $callback);
-            }
-        }
+    public static $ns = 'urn:xmpp:ping';
 
-        public static function pinged($payload, $jaxl) {
-            if($payload['type'] == 'error' && $payload['errorCode'] == 501 && $payload['errorCondition'] == 'feature-not-implemented') {
-                $jaxl->log("[[JAXL0199]] Server doesn't support ping feature, disabling cron tab for periodic ping...");
-                JAXLCron::delete(array('JAXL0199', 'ping'), $jaxl->pingInterval);
-                return $payload;
-            }
-            $jaxl->log("[[JAXL0199]] Rcvd ping response from the server...");
+    public static function init($jaxl)
+    {
+        $jaxl->features[] = self::$ns;
+
+        $jaxl->pingInterval = 0;
+        $jaxl->pingInterval = $jaxl->getConfigByPriority($jaxl->config['pingInterval'], "JAXL_PING_INTERVAL", $jaxl->pingInterval);
+        if ($jaxl->pingInterval > 0)
+            JAXLCron::add(array('JAXL0199', 'ping'), $jaxl->pingInterval, $jaxl->domain, $jaxl->jid, array('JAXL0199', 'pinged'));
+
+        JAXLXml::addTag('iq', 'ping', '//iq/ping/@xmlns');
+        $jaxl->addPlugin('jaxl_get_iq_get', array('JAXL0199', 'handleIq'));
+    }
+
+    public static function handleIq($payload, $jaxl)
+    {
+        if (@$payload['ping'] == self::$ns)
+            return XMPPSend::iq($jaxl, 'result', false, $payload['from'], $payload['to'], false, $payload['id']);
+        return $payload;
+    }
+
+    public static function ping($jaxl, $to, $from, $callback)
+    {
+        if ($jaxl->auth) {
+            $payload = "<ping xmlns='urn:xmpp:ping'/>";
+            return XMPPSend::iq($jaxl, 'get', $payload, $to, $from, $callback);
         }
     }
+
+    public static function pinged($payload, $jaxl)
+    {
+        if ($payload['type'] == 'error' && $payload['errorCode'] == 501 && $payload['errorCondition'] == 'feature-not-implemented') {
+            $jaxl->log("[[JAXL0199]] Server doesn't support ping feature, disabling cron tab for periodic ping...");
+            JAXLCron::delete(array('JAXL0199', 'ping'), $jaxl->pingInterval);
+            return $payload;
+        }
+        $jaxl->log("[[JAXL0199]] Rcvd ping response from the server...");
+    }
+}
 
 ?>

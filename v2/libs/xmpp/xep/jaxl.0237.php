@@ -41,11 +41,12 @@
  * @link http://code.google.com/p/jaxl
  */
 
-    /**
-     * XEP-0237 : Roster Versioning
-    */
-    class JAXL0237 {
+/**
+ * XEP-0237 : Roster Versioning
+ */
+class JAXL0237
+{
 
-    }
+}
 
 ?>

@@ -41,142 +41,163 @@
  * @link http://code.google.com/p/jaxl
  */
 
-    /**
-     * XEP-0045: Mutli-User Chat Implementation
-    */
-    class JAXL0045 {
-        
-        public static $ns = 'http://jabber.org/protocol/muc';   
-    
-        public static function init($jaxl) {
-            $jaxl->features[] = self::$ns;
-            
-            JAXLXml::addTag('presence', 'itemJid', '//presence/x/item/@jid');
-            JAXLXml::addTag('presence', 'itemAffiliation', '//presence/x/item/@affiliation');
-            JAXLXml::addTag('presence', 'itemRole', '//presence/x/item/@role');
-        }
-        
-        /*
-         * Occupant Use Cases
-        */
-        public static function joinRoom($jaxl, $jid, $roomJid, $history=0, $type='seconds') {
-            $child = array();
-            $child['payload'] = '';
-            $child['payload'] .= '<x xmlns="'.self::$ns.'">';
-            $child['payload'] .= '<history '.$type.'="'.$history.'"/>';
-            $child['payload'] .= '</x>';
-            return XMPPSend::presence($jaxl, $roomJid, $jid, $child, false);
-        }
-        
-        public static function exitRoom($jaxl, $jid, $roomJid) {
-            return XMPPSend::presence($jaxl, $roomJid, $jid, false, "unavailable");
-        }
+/**
+ * XEP-0045: Mutli-User Chat Implementation
+ */
+class JAXL0045
+{
 
-        /*
-         * Moderator Use Cases
-        */
-        public static function kickOccupant($jaxl, $fromJid, $nick, $roomJid, $reason=false, $callback=false) {
-            $payload = '<query xmlns="'.self::$ns.'#admin">';
-            $payload .= '<item role="none" nick="'.$nick.'">';
-            if($reason) $payload .= '<reason>'.$reason.'</reason>';
-            $payload .= '</item>';
-            $payload .= '</query>';
-            return XMPPSend::iq($jaxl, "set", $payload, $roomJid, $fromJid, $callback);
-        }
+    public static $ns = 'http://jabber.org/protocol/muc';
 
-        /*
-         * Admin Use Cases
-        */
-        public static function banUser() {
+    public static function init($jaxl)
+    {
+        $jaxl->features[] = self::$ns;
 
-        }
-
-        public static function grantModeratorPrivileges() {
-            
-        }
-
-        public static function revokeModeratorPrivileges() {
-
-        }
-
-        public static function modifyModeratorList() {
-            
-        }
-        
-        /*
-         * Owner Use Cases
-        */
-        public static function createRoom() {
-
-        }
-
-        public static function getUniqueRoomName() {
-
-        }
-        
-        public static function configureRoom() {
-
-        }
-
-        public static function getRoomConfig($jaxl, $jid, $roomJid, $callback=false) {
-            $payload = '<query xmlns="'.self::$ns.'#owner"/>';
-            return XMPPSend::iq($jaxl, "get", $payload, $roomJid, $jid, $callback);
-        }
-        
-        public static function setRoomConfig($jaxl, $jid, $roomJid, $fields, $callback=false) {
-            $payload = JAXL0004::setFormField($fields, false, false, 'submit');
-            $payload = '<query xmlns="'.self::$ns.'#owner">'.$payload.'</query>';
-            return XMPPSend::iq($jaxl, "set", $payload, $roomJid, $jid, $callback);
-        }
-
-        public static function grantOwnerPrivileges($jaxl, $fromJid, $toJid, $roomJid, $reason=false, $callback=false) {
-            $payload = '<query xmlns="'.self::$ns.'#admin">';
-            $payload .= '<item affiliation="owner" jid="'.$toJid.'">';
-            if($reason) $payload .= '<reason>'.$reason.'</reason>';
-            $payload .= '</item>';
-            $payload .= '</query>';
-            return XMPPSend::iq($jaxl, "set", $payload, $roomJid, $fromJid, $callback);
-        }
-        
-        public static function revokeOwnerPrivileges($jaxl, $fromJid, $toJid, $roomJid, $reason=false, $callback=false) {
-            $payload = '<query xmlns="'.self::$ns.'#admin">';
-            $payload .= '<item affiliation="member" jid="'.$toJid.'">';
-            if($reason) $payload .= '<reason>'.$reason.'</reason>';
-            $payload .= '</item>';
-            $payload .= '</query>';
-            return XMPPSend::iq($jaxl, "set", $payload, $roomJid, $fromJid, $callback);
-        }
-        
-        public static function modifyOwnerList() {
-            
-        }
-        
-        public static function grantAdminPrivileges($jaxl, $fromJid, $toJid, $roomJid, $reason=false, $callback=false) {
-            $payload = '<query xmlns="'.self::$ns.'#admin">';
-            $payload .= '<item affiliation="admin" jid="'.$toJid.'">';
-            if($reason) $payload .= '<reason>'.$reason.'</reason>';
-            $payload .= '</item>';
-            $payload .= '</query>';
-            return XMPPSend::iq($jaxl, "set", $payload, $roomJid, $fromJid, $callback);
-        }
-
-        public static function removeAdminPrivileges($jaxl, $fromJid, $toJid, $roomJid, $reason=false, $callback=false) {
-            $payload = '<query xmlns="'.self::$ns.'#admin">';
-            $payload .= '<item affiliation="member" jid="'.$toJid.'">';
-            if($reason) $payload .= '<reason>'.$reason.'</reason>';
-            $payload .= '</item>';
-            $payload .= '</query>';
-            return XMPPSend::iq($jaxl, "set", $payload, $roomJid, $fromJid, $callback);
-        }
-
-        public static function modifyAdminList() {
-
-        }
-
-        public static function destroyRoom() {
-
-        }
-        
+        JAXLXml::addTag('presence', 'itemJid', '//presence/x/item/@jid');
+        JAXLXml::addTag('presence', 'itemAffiliation', '//presence/x/item/@affiliation');
+        JAXLXml::addTag('presence', 'itemRole', '//presence/x/item/@role');
     }
-    
+
+    /*
+     * Occupant Use Cases
+    */
+    public static function joinRoom($jaxl, $jid, $roomJid, $history = 0, $type = 'seconds')
+    {
+        $child = array();
+        $child['payload'] = '';
+        $child['payload'] .= '<x xmlns="' . self::$ns . '">';
+        $child['payload'] .= '<history ' . $type . '="' . $history . '"/>';
+        $child['payload'] .= '</x>';
+        return XMPPSend::presence($jaxl, $roomJid, $jid, $child, false);
+    }
+
+    public static function exitRoom($jaxl, $jid, $roomJid)
+    {
+        return XMPPSend::presence($jaxl, $roomJid, $jid, false, "unavailable");
+    }
+
+    /*
+     * Moderator Use Cases
+    */
+    public static function kickOccupant($jaxl, $fromJid, $nick, $roomJid, $reason = false, $callback = false)
+    {
+        $payload = '<query xmlns="' . self::$ns . '#admin">';
+        $payload .= '<item role="none" nick="' . $nick . '">';
+        if ($reason) $payload .= '<reason>' . $reason . '</reason>';
+        $payload .= '</item>';
+        $payload .= '</query>';
+        return XMPPSend::iq($jaxl, "set", $payload, $roomJid, $fromJid, $callback);
+    }
+
+    /*
+     * Admin Use Cases
+    */
+    public static function banUser()
+    {
+
+    }
+
+    public static function grantModeratorPrivileges()
+    {
+
+    }
+
+    public static function revokeModeratorPrivileges()
+    {
+
+    }
+
+    public static function modifyModeratorList()
+    {
+
+    }
+
+    /*
+     * Owner Use Cases
+    */
+    public static function createRoom()
+    {
+
+    }
+
+    public static function getUniqueRoomName()
+    {
+
+    }
+
+    public static function configureRoom()
+    {
+
+    }
+
+    public static function getRoomConfig($jaxl, $jid, $roomJid, $callback = false)
+    {
+        $payload = '<query xmlns="' . self::$ns . '#owner"/>';
+        return XMPPSend::iq($jaxl, "get", $payload, $roomJid, $jid, $callback);
+    }
+
+    public static function setRoomConfig($jaxl, $jid, $roomJid, $fields, $callback = false)
+    {
+        $payload = JAXL0004::setFormField($fields, false, false, 'submit');
+        $payload = '<query xmlns="' . self::$ns . '#owner">' . $payload . '</query>';
+        return XMPPSend::iq($jaxl, "set", $payload, $roomJid, $jid, $callback);
+    }
+
+    public static function grantOwnerPrivileges($jaxl, $fromJid, $toJid, $roomJid, $reason = false, $callback = false)
+    {
+        $payload = '<query xmlns="' . self::$ns . '#admin">';
+        $payload .= '<item affiliation="owner" jid="' . $toJid . '">';
+        if ($reason) $payload .= '<reason>' . $reason . '</reason>';
+        $payload .= '</item>';
+        $payload .= '</query>';
+        return XMPPSend::iq($jaxl, "set", $payload, $roomJid, $fromJid, $callback);
+    }
+
+    public static function revokeOwnerPrivileges($jaxl, $fromJid, $toJid, $roomJid, $reason = false, $callback = false)
+    {
+        $payload = '<query xmlns="' . self::$ns . '#admin">';
+        $payload .= '<item affiliation="member" jid="' . $toJid . '">';
+        if ($reason) $payload .= '<reason>' . $reason . '</reason>';
+        $payload .= '</item>';
+        $payload .= '</query>';
+        return XMPPSend::iq($jaxl, "set", $payload, $roomJid, $fromJid, $callback);
+    }
+
+    public static function modifyOwnerList()
+    {
+
+    }
+
+    public static function grantAdminPrivileges($jaxl, $fromJid, $toJid, $roomJid, $reason = false, $callback = false)
+    {
+        $payload = '<query xmlns="' . self::$ns . '#admin">';
+        $payload .= '<item affiliation="admin" jid="' . $toJid . '">';
+        if ($reason) $payload .= '<reason>' . $reason . '</reason>';
+        $payload .= '</item>';
+        $payload .= '</query>';
+        return XMPPSend::iq($jaxl, "set", $payload, $roomJid, $fromJid, $callback);
+    }
+
+    public static function removeAdminPrivileges($jaxl, $fromJid, $toJid, $roomJid, $reason = false, $callback = false)
+    {
+        $payload = '<query xmlns="' . self::$ns . '#admin">';
+        $payload .= '<item affiliation="member" jid="' . $toJid . '">';
+        if ($reason) $payload .= '<reason>' . $reason . '</reason>';
+        $payload .= '</item>';
+        $payload .= '</query>';
+        return XMPPSend::iq($jaxl, "set", $payload, $roomJid, $fromJid, $callback);
+    }
+
+    public static function modifyAdminList()
+    {
+
+    }
+
+    public static function destroyRoom()
+    {
+
+    }
+
+}
+
 ?>

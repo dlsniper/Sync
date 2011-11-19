@@ -41,32 +41,37 @@
  * @link http://code.google.com/p/jaxl
  */
 
-    /**
-     * XEP-0050: Ad-Hoc Commands
-    */
-    class JAXL0050 {
+/**
+ * XEP-0050: Ad-Hoc Commands
+ */
+class JAXL0050
+{
 
-        public static $ns = 'http://jabber.org/protocol/commands';
+    public static $ns = 'http://jabber.org/protocol/commands';
 
-        public static function init($jaxl) {
-            $jaxl->features[] = self::$ns;
-        }
-        
-        public static function getCommandList($jaxl, $to, $from, $callback) {
-            $payload = '<query xmlns="http://jabber.org/protocol/disco#items" node="'.self::$ns.'"/>';
-            return XMPPSend::iq($jaxl, 'get', $payload, $to, $from, $callback);
-        }
-
-        public static function getCommandInfo($jaxl, $to, $from, $node, $callback) {
-            $payload = '<query xmlns="http://jabber.org/protocol/disco#info" node="'.$node.'"/>';
-            return XMPPSend::iq($jaxl, 'get', $payload, $to, $from, $callback);
-        }
-        
-        public static function executeCommand($jaxl, $to, $from, $node, $callback) {
-            $payload = '<command xmlns="'.self::$ns.'" node="'.$node.'" action="execute"/>';
-            return XMPPSend::iq($jaxl, 'set', $payload, $to, $from, $callback);
-        }
-
+    public static function init($jaxl)
+    {
+        $jaxl->features[] = self::$ns;
     }
+
+    public static function getCommandList($jaxl, $to, $from, $callback)
+    {
+        $payload = '<query xmlns="http://jabber.org/protocol/disco#items" node="' . self::$ns . '"/>';
+        return XMPPSend::iq($jaxl, 'get', $payload, $to, $from, $callback);
+    }
+
+    public static function getCommandInfo($jaxl, $to, $from, $node, $callback)
+    {
+        $payload = '<query xmlns="http://jabber.org/protocol/disco#info" node="' . $node . '"/>';
+        return XMPPSend::iq($jaxl, 'get', $payload, $to, $from, $callback);
+    }
+
+    public static function executeCommand($jaxl, $to, $from, $node, $callback)
+    {
+        $payload = '<command xmlns="' . self::$ns . '" node="' . $node . '" action="execute"/>';
+        return XMPPSend::iq($jaxl, 'set', $payload, $to, $from, $callback);
+    }
+
+}
 
 ?>

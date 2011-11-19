@@ -41,34 +41,37 @@
  * @link http://code.google.com/p/jaxl
  */
 
-    /**
-     * XEP-0118 : User Tune
-    */
-    class JAXL0118 {
+/**
+ * XEP-0118 : User Tune
+ */
+class JAXL0118
+{
 
-        public static $ns = 'http://jabber.org/protocol/tune';
+    public static $ns = 'http://jabber.org/protocol/tune';
 
-        public static function init($jaxl) {
-            // requires PEP XEP
-            $jaxl->requires('JAXL0163');
+    public static function init($jaxl)
+    {
+        // requires PEP XEP
+        $jaxl->requires('JAXL0163');
 
-            // update client feature list
-            $jaxl->features[] = self::$ns;
+        // update client feature list
+        $jaxl->features[] = self::$ns;
 
-            JAXLXml::addTag('message', 'tune', '//message/event/items/item/tune/@xmlns');
-            JAXLXml::addTag('message', 'tuneArtist', '//message/event/items/item/tune/artist');
-            JAXLXml::addTag('message', 'tuneLength', '//message/event/items/item/tune/length');
-            JAXLXml::addTag('message', 'tuneRating', '//message/event/items/item/tune/rating');
-            JAXLXml::addTag('message', 'tuneSource', '//message/event/items/item/tune/source');
-            JAXLXml::addTag('message', 'tuneTitle', '//message/event/items/item/tune/title');
-            JAXLXml::addTag('message', 'tuneTrack', '//message/event/items/item/tune/track');
-            JAXLXml::addTag('message', 'tuneURI', '//message/event/items/item/tune/uri');
-        }
-
-        public static function publishTune($jaxl, $from, $item) {
-            return JAXL0163::publishItem($jaxl, $from, self::$ns, $item);
-        }
-
+        JAXLXml::addTag('message', 'tune', '//message/event/items/item/tune/@xmlns');
+        JAXLXml::addTag('message', 'tuneArtist', '//message/event/items/item/tune/artist');
+        JAXLXml::addTag('message', 'tuneLength', '//message/event/items/item/tune/length');
+        JAXLXml::addTag('message', 'tuneRating', '//message/event/items/item/tune/rating');
+        JAXLXml::addTag('message', 'tuneSource', '//message/event/items/item/tune/source');
+        JAXLXml::addTag('message', 'tuneTitle', '//message/event/items/item/tune/title');
+        JAXLXml::addTag('message', 'tuneTrack', '//message/event/items/item/tune/track');
+        JAXLXml::addTag('message', 'tuneURI', '//message/event/items/item/tune/uri');
     }
+
+    public static function publishTune($jaxl, $from, $item)
+    {
+        return JAXL0163::publishItem($jaxl, $from, self::$ns, $item);
+    }
+
+}
 
 ?>

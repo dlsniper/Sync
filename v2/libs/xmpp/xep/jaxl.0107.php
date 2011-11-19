@@ -41,27 +41,30 @@
  * @link http://code.google.com/p/jaxl
  */
 
-    /**
-     * XEP-0107 : User Mood
-    */
-    class JAXL0107 {
+/**
+ * XEP-0107 : User Mood
+ */
+class JAXL0107
+{
 
-        public static $ns = 'http://jabber.org/protocol/mood';
+    public static $ns = 'http://jabber.org/protocol/mood';
 
-        public static function init($jaxl) {
-            // requires PEP XEP
-            $jaxl->requires('JAXL0163');
+    public static function init($jaxl)
+    {
+        // requires PEP XEP
+        $jaxl->requires('JAXL0163');
 
-            // update feature list
-            $jaxl->features[] = self::$ns;
+        // update feature list
+        $jaxl->features[] = self::$ns;
 
-            JAXLXml::addTag('message', 'mood', '//message/event/items/item/mood/@xmlns');
-        }
-
-        public static function publishMood($jaxl, $from, $item) {
-            return JAXL0163::publishItem($jaxl, $from, self::$ns, $item);
-        }
-
+        JAXLXml::addTag('message', 'mood', '//message/event/items/item/mood/@xmlns');
     }
+
+    public static function publishMood($jaxl, $from, $item)
+    {
+        return JAXL0163::publishItem($jaxl, $from, self::$ns, $item);
+    }
+
+}
 
 ?>

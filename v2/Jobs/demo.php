@@ -7,10 +7,12 @@
  * @author Florin Patan
  * @copyright Florin Patan
  */
-class Demo extends JobServer {
+class Demo extends JobServer
+{
     const JOB = 'demo';
 
-    public static function addJob($options, $fatalIfError) {
+    public static function addJob($options, $fatalIfError)
+    {
         // Make the options storable in the database
         $options = serialize($options);
 
@@ -36,7 +38,8 @@ class Demo extends JobServer {
         return $id;
     }
 
-    public static function processJob($jobId) {
+    public static function processJob($jobId)
+    {
         // Let the server know we are about to do our job
         //$this->updateStatus(JobServer::JOB_RUNNING);
         // Debug code
@@ -90,7 +93,8 @@ class Demo extends JobServer {
      * @param  int     How much should we be waiting for until we retry the job
      * @return jobServerOption
      */
-    public static function getJobServerDetails($parallelThreads = 5, $jobTimeout = 60, $retryCount = 3, $retryPause = 120) {
+    public static function getJobServerDetails($parallelThreads = 5, $jobTimeout = 60, $retryCount = 3, $retryPause = 120)
+    {
         self::$serverOption = new jobServerOption(self::JOB, $parallelThreads, $jobTimeout, $retryCount, $retryPause);
         return self::$serverOption;
     }
@@ -101,7 +105,8 @@ class Demo extends JobServer {
      * @param   boolean    Debug mode?
      * @return  jobServer  Job
      */
-    public function __construct($jobId, $debugMode) {
+    public function __construct($jobId, $debugMode)
+    {
         return parent::__construct(self::JOB, $jobId, $debugMode);
     }
 

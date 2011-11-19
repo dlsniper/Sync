@@ -41,31 +41,35 @@
  * @link http://code.google.com/p/jaxl
  */
 
-    /**
-     * XEP-0049: Private XML Storage
-    */
-    class JAXL0049 {
-        
-        public static $ns = 'jabber:iq:private';
-        
-        public static function init($jaxl) {
-            $jaxl->features[] = self::$ns;
-        }
+/**
+ * XEP-0049: Private XML Storage
+ */
+class JAXL0049
+{
 
-        public static function storeXML($jaxl, $xml, $callback) {
-            $payload = '<query xmlns="'.self::$ns.'">';
-            $payload .= $xml;
-            $payload .= '</query>';
-            return XMPPSend::iq($jaxl, 'set', $payload, false, false, $callback);
-        }
+    public static $ns = 'jabber:iq:private';
 
-        public static function getXML($jaxl, $xml, $callback) {
-            $payload = '<query xmlns="'.self::$ns.'">';
-            $payload .= $xml;
-            $payload .= '</query>';
-            return XMPPSend::iq($jaxl, 'get', $payload, false, false, $callback);
-        }
-
+    public static function init($jaxl)
+    {
+        $jaxl->features[] = self::$ns;
     }
+
+    public static function storeXML($jaxl, $xml, $callback)
+    {
+        $payload = '<query xmlns="' . self::$ns . '">';
+        $payload .= $xml;
+        $payload .= '</query>';
+        return XMPPSend::iq($jaxl, 'set', $payload, false, false, $callback);
+    }
+
+    public static function getXML($jaxl, $xml, $callback)
+    {
+        $payload = '<query xmlns="' . self::$ns . '">';
+        $payload .= $xml;
+        $payload .= '</query>';
+        return XMPPSend::iq($jaxl, 'get', $payload, false, false, $callback);
+    }
+
+}
 
 ?>

@@ -41,29 +41,33 @@
  * @link http://code.google.com/p/jaxl
  */
 
-    /**
-     * XEP-0055 : Jabber Search
-    */
-    class JAXL0055 {
+/**
+ * XEP-0055 : Jabber Search
+ */
+class JAXL0055
+{
 
-        public static $ns = 'jabber:iq:search';
+    public static $ns = 'jabber:iq:search';
 
-        public static function init($jaxl) {
-            $jaxl->features[] = self::$ns;
-        }
-
-        public static function getSearchField($jaxl, $callback) {
-            $payload = '<query xmlns="'.self::$ns.'"/>';
-            return XMPPSend::iq($jaxl, 'get', false, false, $callback);
-        }
-
-        public static function submitSearchRequest($jaxl, $field, $callback) {
-            $payload = '<query xmlns="'.self::$ns.'">';
-            $payload .= $field;
-            $payload .= '</query>';
-            return XMPPSend::iq($jaxl, 'set', false, false, $callback);
-        }
-
+    public static function init($jaxl)
+    {
+        $jaxl->features[] = self::$ns;
     }
+
+    public static function getSearchField($jaxl, $callback)
+    {
+        $payload = '<query xmlns="' . self::$ns . '"/>';
+        return XMPPSend::iq($jaxl, 'get', false, false, $callback);
+    }
+
+    public static function submitSearchRequest($jaxl, $field, $callback)
+    {
+        $payload = '<query xmlns="' . self::$ns . '">';
+        $payload .= $field;
+        $payload .= '</query>';
+        return XMPPSend::iq($jaxl, 'set', false, false, $callback);
+    }
+
+}
 
 ?>

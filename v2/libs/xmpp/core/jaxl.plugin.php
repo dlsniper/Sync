@@ -41,82 +41,86 @@
  * @link http://code.google.com/p/jaxl
  */
 
+/**
+ * Jaxl Plugin Framework
+ */
+class JAXLPlugin
+{
+
     /**
-     * Jaxl Plugin Framework
-    */ 
-    class JAXLPlugin {
-       
-        /**
-         * Registry of all registered hooks
-        */
-        public static $registry = array();
-       
-        /**
-         * Register callback on hook
-         *
-         * @param string $hook
-         * @param string|array $callback A valid callback inside your application code
-         * @param integer $priority (>0) When more than one callbacks is attached on hook, they are called in priority order or which ever was registered first
-         * @param integer $uid random id $jaxl->uid of connected Jaxl instance, $uid=0 means callback registered for all connected instances
-        */
-        public static function add($hook, $callback, $priority=10, $uid=0) {
-            if(!isset(self::$registry[$uid])) 
-                self::$registry[$uid] = array();
+     * Registry of all registered hooks
+     */
+    public static $registry = array();
 
-            if(!isset(self::$registry[$uid][$hook]))
-                self::$registry[$uid][$hook] = array();
-            
-            if(!isset(self::$registry[$uid][$hook][$priority])) 
-                self::$registry[$uid][$hook][$priority] = array();
-            
-            array_push(self::$registry[$uid][$hook][$priority], $callback);
-        }
-       
-        /**
-         * Removes a previously registered callback on hook
-         *
-         * @param string $hook
-         * @param string|array $callback
-         * @param integer $priority
-         * @param integer $uid random id $jaxl->uid of connected Jaxl instance, $uid=0 means callback registered for all connected instances
-        */
-        public static function remove($hook, $callback, $priority=10, $uid=0) {
-            if(($key = array_search($callback, self::$registry[$uid][$hook][$priority])) !== FALSE)
-                unset(self::$registry[$uid][$hook][$priority][$key]);
+    /**
+     * Register callback on hook
+     *
+     * @param string $hook
+     * @param string|array $callback A valid callback inside your application code
+     * @param integer $priority (>0) When more than one callbacks is attached on hook, they are called in priority order or which ever was registered first
+     * @param integer $uid random id $jaxl->uid of connected Jaxl instance, $uid=0 means callback registered for all connected instances
+     */
+    public static function add($hook, $callback, $priority = 10, $uid = 0)
+    {
+        if (!isset(self::$registry[$uid]))
+            self::$registry[$uid] = array();
 
-            if(count(self::$registry[$uid][$hook][$priority]) == 0)
-                unset(self::$registry[$uid][$hook][$priority]);
-            
-            if(count(self::$registry[$uid][$hook]) == 0)
-                unset(self::$registry[$uid][$hook]);
-        }
-        
-        /*
-         * Method calls previously registered callbacks on executing hook
-         * 
-         * @param string $hook
-         * @param mixed $payload
-         * @param object $jaxl
-         * @param array $filter
-        */
-        public static function execute($hook, $payload=null, $jaxl=false, $filter=false) {
-            if($jaxl) $uids = array($jaxl->uid, 0);
-            else $uids = array(0);
-            foreach($uids as $uid) {
-                if(isset(self::$registry[$uid][$hook]) && count(self::$registry[$uid][$hook]) > 0) {
-                    foreach(self::$registry[$uid][$hook] as $priority) {
-                        foreach($priority as $callback) {
-                            if($filter === false || (is_array($filter) && in_array($callback[0], $filter))) {
-                                if($jaxl) $jaxl->log("[[JAXLPlugin]] Executing hook $hook for uid $uid", 7);
-                                $payload = call_user_func($callback, $payload, $jaxl);
-                            }
+        if (!isset(self::$registry[$uid][$hook]))
+            self::$registry[$uid][$hook] = array();
+
+        if (!isset(self::$registry[$uid][$hook][$priority]))
+            self::$registry[$uid][$hook][$priority] = array();
+
+        array_push(self::$registry[$uid][$hook][$priority], $callback);
+    }
+
+    /**
+     * Removes a previously registered callback on hook
+     *
+     * @param string $hook
+     * @param string|array $callback
+     * @param integer $priority
+     * @param integer $uid random id $jaxl->uid of connected Jaxl instance, $uid=0 means callback registered for all connected instances
+     */
+    public static function remove($hook, $callback, $priority = 10, $uid = 0)
+    {
+        if (($key = array_search($callback, self::$registry[$uid][$hook][$priority])) !== FALSE)
+            unset(self::$registry[$uid][$hook][$priority][$key]);
+
+        if (count(self::$registry[$uid][$hook][$priority]) == 0)
+            unset(self::$registry[$uid][$hook][$priority]);
+
+        if (count(self::$registry[$uid][$hook]) == 0)
+            unset(self::$registry[$uid][$hook]);
+    }
+
+    /*
+     * Method calls previously registered callbacks on executing hook
+     *
+     * @param string $hook
+     * @param mixed $payload
+     * @param object $jaxl
+     * @param array $filter
+    */
+    public static function execute($hook, $payload = null, $jaxl = false, $filter = false)
+    {
+        if ($jaxl) $uids = array($jaxl->uid, 0);
+        else $uids = array(0);
+        foreach ($uids as $uid) {
+            if (isset(self::$registry[$uid][$hook]) && count(self::$registry[$uid][$hook]) > 0) {
+                foreach (self::$registry[$uid][$hook] as $priority) {
+                    foreach ($priority as $callback) {
+                        if ($filter === false || (is_array($filter) && in_array($callback[0], $filter))) {
+                            if ($jaxl) $jaxl->log("[[JAXLPlugin]] Executing hook $hook for uid $uid", 7);
+                            $payload = call_user_func($callback, $payload, $jaxl);
                         }
                     }
                 }
             }
-            return $payload;
         }
-        
+        return $payload;
     }
-    
+
+}
+
 ?>

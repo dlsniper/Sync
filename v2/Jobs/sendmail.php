@@ -7,7 +7,8 @@
  * @author Florin Patan
  * @copyright Florin Patan
  */
-class Sendmail extends JobServer {
+class Sendmail extends JobServer
+{
 
     /**
      * This holds our options for the job
@@ -28,7 +29,8 @@ class Sendmail extends JobServer {
     /**
      * This function will start the job
      */
-    public function execute() {
+    public function execute()
+    {
         return true;
     }
 
@@ -40,7 +42,8 @@ class Sendmail extends JobServer {
      * @param  int     How much should we be waiting for until we retry the job
      * @return jobServerOption
      */
-    public static function getJobServerDetails($parallelThreads = 5, $jobTimeout = 60, $retryCount = 3, $retryPause = 120) {
+    public static function getJobServerDetails($parallelThreads = 5, $jobTimeout = 60, $retryCount = 3, $retryPause = 120)
+    {
         self::$serverOption = new jobServerOption('mail', $parallelThreads, $jobTimeout, $retryCount, $retryPause);
         return self::$serverOption;
     }
@@ -51,7 +54,8 @@ class Sendmail extends JobServer {
      * @param   $jobExtra   Extra options for the job
      * @return  JobServer   Return the job object that is going to be launched
      */
-    public function __construct($jobOptions, $jobExtra = null) {
+    public function __construct($jobOptions, $jobExtra = null)
+    {
         $this->options = $jobOptions;
         $this->extra = $jobExtra;
     }
