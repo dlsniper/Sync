@@ -13,8 +13,12 @@
  * @todo REMOVE debug code.
  */
 /*
-  INSERT INTO `florinp_sync`.`tasks` (`tasks_id`, `tasks_job_type`, `tasks_option`, `tasks_created`, `tasks_execute`, `tasks_status`, `tasks_retry_count`) VALUES (NULL, 'playlist', 'a:2:{s:8:"location";s:16:"ADD36670A6546824";s:8:"position";s:1:"0";}', '2010-11-01 00:00:00', '0000-00-00 00:00:00', 'new', '0'), (NULL, 'playlist', 'a:2:{s:8:"location";s:16:"ADD36670A6546824";s:8:"position";s:1:"0";}', '2010-11-03 00:00:00', '0000-00-00 00:00:00', 'new', '0');
-  INSERT INTO `florinp_sync`.`tasks` (`tasks_id`, `tasks_job_type`, `tasks_option`, `tasks_created`, `tasks_execute`, `tasks_status`, `tasks_retry_count`) VALUES (NULL, 'playlist', 'a:2:{s:8:"location";s:16:"ADD36670A6546824";s:8:"position";s:1:"0";}', '2010-11-01 00:00:00', '0000-00-00 00:00:00', 'new', '0'), (NULL, 'playlist', 'a:2:{s:8:"location";s:16:"ADD36670A6546824";s:8:"position";s:1:"0";}', '2010-11-03 00:00:00', '0000-00-00 00:00:00', 'new', '0');
+  INSERT INTO `florinp_sync`.`tasks` (`tasks_id`, `tasks_job_type`, `tasks_option`, `tasks_created`, `tasks_execute`, `tasks_status`, `tasks_retry_count`)
+  VALUES
+    (NULL, 'playlist', 'a:2:{s:8:"location";s:16:"ADD36670A6546824";s:8:"position";s:1:"0";}', '2010-11-01 00:00:00', '0000-00-00 00:00:00', 'new', '0'),
+    (NULL, 'playlist', 'a:2:{s:8:"location";s:16:"ADD36670A6546824";s:8:"position";s:1:"0";}', '2010-11-03 00:00:00', '0000-00-00 00:00:00', 'new', '0'),
+    (NULL, 'playlist', 'a:2:{s:8:"location";s:16:"ADD36670A6546824";s:8:"position";s:1:"0";}', '2010-11-01 00:00:00', '0000-00-00 00:00:00', 'new', '0'),
+    (NULL, 'playlist', 'a:2:{s:8:"location";s:16:"ADD36670A6546824";s:8:"position";s:1:"0";}', '2010-11-03 00:00:00', '0000-00-00 00:00:00', 'new', '0');
  */
 
 $debugMode = true;

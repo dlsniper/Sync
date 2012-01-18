@@ -43,10 +43,10 @@
 
 // include required classes
 jaxl_require(array(
-                  'JAXLPlugin',
-                  'JAXLUtil',
-                  'JAXLog'
-             ));
+    'JAXLPlugin',
+    'JAXLUtil',
+    'JAXLog'
+));
 
 /**
  * XMPP Send Class

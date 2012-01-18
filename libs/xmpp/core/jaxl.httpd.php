@@ -51,8 +51,8 @@ define('JAXL_HTTPd_SELECT_TIMEOUT', 1);
 
 // Jaxl core dependency
 jaxl_require(array(
-                  'JAXLPlugin'
-             ));
+    'JAXLPlugin'
+));
 
 // Simple socket select server
 class JAXLHTTPd
@@ -158,9 +158,9 @@ class JAXLHTTPd
                     else {
                         //echo "Recv data from ".$ip."#".$port.PHP_EOL;
                         $request = $this->parseRequest($data, array(
-                                                                   'ip' => $ip,
-                                                                   'port' => $port
-                                                              ));
+                            'ip' => $ip,
+                            'port' => $port
+                        ));
 
                         if ($request['meta']['protocol'] == 'HTTP') {
                             JAXLPlugin::execute('jaxl_httpd_get_http_request', $request);

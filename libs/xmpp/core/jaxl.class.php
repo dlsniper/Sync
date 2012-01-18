@@ -77,7 +77,7 @@ function jaxl_require($classNames, $jaxl = false)
     foreach ($classNames as $key => $className) {
         $xep = substr($className, 4, 4);
         if (substr($className, 0, 4) == 'JAXL'
-            && is_numeric($xep)
+                && is_numeric($xep)
         ) { // is XEP
             if (!isset($included[$className])) {
                 require_once JAXL_BASE_PATH . '/xep/jaxl.' . $xep . '.php';
@@ -99,14 +99,14 @@ $jaxl_instance_cnt = 0;
 
 // Include core classes and xmpp base
 jaxl_require(array(
-                  'JAXLog',
-                  'JAXLUtil',
-                  'JAXLPlugin',
-                  'JAXLCron',
-                  'JAXLException',
-                  'XML',
-                  'XMPP',
-             ));
+    'JAXLog',
+    'JAXLUtil',
+    'JAXLPlugin',
+    'JAXLCron',
+    'JAXLException',
+    'XML',
+    'XMPP',
+));
 
 /**
  * Jaxl class extending base XMPP class
@@ -756,9 +756,9 @@ class JAXL extends XMPP
 
         /* include recommended XEP's for every XMPP entity */
         $this->requires(array(
-                             'JAXL0030', // service discovery
-                             'JAXL0128' // entity capabilities
-                        ));
+            'JAXL0030', // service discovery
+            'JAXL0128' // entity capabilities
+        ));
 
         /* initialize multi-core instance holder */
         if ($jaxl_instance_cnt == 1) $this->instances = array('xmpp' => array());
@@ -849,7 +849,7 @@ class JAXL extends XMPP
         if (substr($xep, 0, 4) == 'JAXL') {
             $xep = substr($xep, 4, 4);
             if (is_numeric($xep)
-                && class_exists('JAXL' . $xep)
+                    && class_exists('JAXL' . $xep)
             ) {
                 $this->log("[[JAXL]] Calling JAXL$xep method " . $method, 5);
                 return call_user_func_array(array('JAXL' . $xep, $method), $param);
@@ -931,7 +931,7 @@ class JAXL extends XMPP
             }
 
             if ($payload['type'] == 'subscribe'
-                && $this->autoSubscribe
+                    && $this->autoSubscribe
             ) {
                 $this->subscribed($payload['from']);
                 $this->subscribe($payload['from']);

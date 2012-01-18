@@ -20,13 +20,13 @@ require_once '../core/jaxl.class.php';
 
 // initialize JAXL instance
 $xmpp = new JAXL(array(
-                      'user' => 'username',
-                      'pass' => 'password',
-                      'domain' => 'localhost',
-                      'logLevel' => 4,
-                      // Force CLI mode since this app runs from browser but we don't intend to use BOSH or Ajax
-                      'mode' => 'cli'
-                 ));
+    'user' => 'username',
+    'pass' => 'password',
+    'domain' => 'localhost',
+    'logLevel' => 4,
+    // Force CLI mode since this app runs from browser but we don't intend to use BOSH or Ajax
+    'mode' => 'cli'
+));
 
 // Demo requires VCard XEP
 $xmpp->requires('JAXL0054');

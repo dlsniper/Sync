@@ -17,13 +17,13 @@ require_once '../core/jaxl.class.php';
 // List of constants can be found inside "../../env/jaxl.ini"
 // Note: Values passed to the constructor always overwrite defined constants
 $jaxl = new JAXL(array(
-                      'user' => 'username',
-                      'pass' => 'password',
-                      'host' => 'talk.google.com',
-                      'domain' => 'gmail.com',
-                      'authType' => 'PLAIN',
-                      'logLevel' => 4
-                 ));
+    'user' => 'username',
+    'pass' => 'password',
+    'host' => 'talk.google.com',
+    'domain' => 'gmail.com',
+    'authType' => 'PLAIN',
+    'logLevel' => 4
+));
 
 // Post successful auth send desired message
 function postAuth($payload, $jaxl)

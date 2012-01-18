@@ -13,11 +13,11 @@
 // Initialize Jaxl Library
 require_once '../core/jaxl.class.php';
 $jaxl = new JAXL(array(
-                      'port' => 5559,
-                      'compHost' => 'component.localhost',
-                      'compPass' => 'secret',
-                      'logLevel' => 4
-                 ));
+    'port' => 5559,
+    'compHost' => 'component.localhost',
+    'compPass' => 'secret',
+    'logLevel' => 4
+));
 
 // Include required XEP's
 $jaxl->requires('JAXL0114'); // Jabber Component Protocol

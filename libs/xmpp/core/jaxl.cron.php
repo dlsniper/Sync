@@ -61,7 +61,7 @@ class JAXLCron
         foreach (self::$cron as $interval => $jobs) {
             foreach ($jobs as $key => $job) {
                 if ($jaxl->clock != 0
-                    && $jaxl->clocked - $job['lastCall'] > $interval // if cron interval has already passed
+                        && $jaxl->clocked - $job['lastCall'] > $interval // if cron interval has already passed
                 ) {
                     self::$cron[$interval][$key]['lastCall'] = $jaxl->clocked;
                     $arg = $job['arg'];

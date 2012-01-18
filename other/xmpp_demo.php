@@ -4,13 +4,13 @@ error_reporting(E_ALL ^ E_DEPRECATED);
 
 require_once '../libs/xmpp/core/jaxl.class.php';
 $jaxl = new JAXL(array(
-                      'user' => 'florin.faspay@gmail.com',
-                      'pass' => 'xx',
-                      'host' => 'talk.google.com',
-                      'domain' => 'google.com',
-                      'authType' => 'PLAIN',
-                      'logLevel' => 5,
-                 ));
+    'user' => 'florin.faspay@gmail.com',
+    'pass' => 'xx',
+    'host' => 'talk.google.com',
+    'domain' => 'google.com',
+    'authType' => 'PLAIN',
+    'logLevel' => 5,
+));
 
 // Send message after successful authentication
 function postAuth($payload, $jaxl)

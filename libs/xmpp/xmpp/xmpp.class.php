@@ -43,11 +43,11 @@
 
 // include required classes
 jaxl_require(array(
-                  'JAXLPlugin',
-                  'JAXLog',
-                  'XMPPGet',
-                  'XMPPSend'
-             ));
+    'JAXLPlugin',
+    'JAXLog',
+    'XMPPGet',
+    'XMPPSend'
+));
 
 /**
  * Base XMPP class
@@ -381,9 +381,9 @@ class XMPP
             $this->obuffer .= $xml;
 
             if ($this->rateLimit
-                && !$force
-                && $this->lastSendTime
-                && ($currSendRate > $this->sendRate)
+                    && !$force
+                    && $this->lastSendTime
+                    && ($currSendRate > $this->sendRate)
             ) {
                 $this->log("[[XMPPSend]] rateLimit\nBufferSize:" . strlen($this->obuffer) . ", maxSendRate:" . $this->sendRate . ", currSendRate:" . $currSendRate, 5);
                 return 0;

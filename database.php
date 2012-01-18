@@ -147,7 +147,7 @@ class database extends mysqli
         }
 
         // Create our object
-        @parent::__construct($host, "florinp_sync", "FIKIMICx86Z", "florinp_sync");
+        @parent::__construct($host, "root", "x", "florinp_sync");
 
         // Check of the connection was possible or not
         if ($this->connect_error) {

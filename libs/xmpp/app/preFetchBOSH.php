@@ -20,21 +20,21 @@ require_once '../core/jaxl.class.php';
 
 // initialize JAXL instance
 $xmpp = new JAXL(array(
-                      'user' => '',
-                      'pass' => '',
-                      'domain' => 'localhost',
-                      'boshHost' => 'localhost',
-                      'boshPort' => 5280,
-                      'boshSuffix' => 'http-bind',
-                      'boshOut' => false, // Disable auto-output of Jaxl Bosh Module
-                      'logLevel' => 4
-                 ));
+    'user' => '',
+    'pass' => '',
+    'domain' => 'localhost',
+    'boshHost' => 'localhost',
+    'boshPort' => 5280,
+    'boshSuffix' => 'http-bind',
+    'boshOut' => false, // Disable auto-output of Jaxl Bosh Module
+    'logLevel' => 4
+));
 
 // Include required XEP's
 $xmpp->requires(array(
-                     'JAXL0054', // VCard
-                     'JAXL0206' // XMPP over Bosh
-                ));
+    'JAXL0054', // VCard
+    'JAXL0206' // XMPP over Bosh
+));
 
 function doAuth($mechanism, $xmpp)
 {

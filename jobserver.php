@@ -14,7 +14,7 @@ abstract class JobServer
      * Path to the php exec
      * @var string
      */
-    protected $phpPath = '/usr/local/bin/php';
+    protected $phpPath = '/usr/bin/env php';
 
     /**
      * Various jobs statuses
@@ -45,14 +45,14 @@ abstract class JobServer
      * @var    array   cURL related options
      */
     protected static $curlOptions = array(CURLOPT_RETURNTRANSFER => true, // return web page
-                                          CURLOPT_HEADER => false, // don't return headers
-                                          CURLOPT_FOLLOWLOCATION => true, // follow redirects
-                                          CURLOPT_ENCODING => "", // handle all encodings
-                                          CURLOPT_USERAGENT => "Opera/9.80 (Windows NT 6.1; U; en) Presto/2.8.131 Version/11.10", // who am i but a ghost
-                                          CURLOPT_AUTOREFERER => true, // set referer on redirect
-                                          CURLOPT_CONNECTTIMEOUT => 10, // timeout on connect
-                                          CURLOPT_TIMEOUT => 10, // timeout on response
-                                          CURLOPT_MAXREDIRS => 10); // stop after 10 redirects
+        CURLOPT_HEADER => false, // don't return headers
+        CURLOPT_FOLLOWLOCATION => true, // follow redirects
+        CURLOPT_ENCODING => "", // handle all encodings
+        CURLOPT_USERAGENT => "Opera/9.80 (Windows NT 6.1; U; en) Presto/2.8.131 Version/11.10", // who am i but a ghost
+        CURLOPT_AUTOREFERER => true, // set referer on redirect
+        CURLOPT_CONNECTTIMEOUT => 10, // timeout on connect
+        CURLOPT_TIMEOUT => 10, // timeout on response
+        CURLOPT_MAXREDIRS => 10); // stop after 10 redirects
     //CURLOPT_ENCODING       => "deflate, gzip, x-gzip, identity, *;q=0", //
     /**
      * Debug mode

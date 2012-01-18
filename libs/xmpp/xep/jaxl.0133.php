@@ -55,9 +55,9 @@ class JAXL0133
     {
         // include required XEP's
         $jaxl->requires(array(
-                             'JAXL0004', // Data Forms
-                             'JAXL0050' // Ad-Hoc Commands
-                        ));
+            'JAXL0004', // Data Forms
+            'JAXL0050' // Ad-Hoc Commands
+        ));
 
         $jaxl->features[] = self::$ns;
     }

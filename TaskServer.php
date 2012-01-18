@@ -535,7 +535,7 @@ class TaskServer
 
             // Check to see if we've reached the limit for this job type
             if ($jobThreads >= $serverType->parallelThreads ||
-                !array_key_exists($serverType->jobType, $pendingJobs)
+                    !array_key_exists($serverType->jobType, $pendingJobs)
             ) {
                 // And skip to the next job type if so
                 continue;
@@ -545,7 +545,7 @@ class TaskServer
             foreach ($pendingJobs[$serverType->jobType] as $jobId) {
                 // Check to see if this job is not in the que already and we have enough slots for this job type
                 if (!array_key_exists($jobId, $this->activeThreads[$serverType->jobType]) &&
-                    $jobThreads < $serverType->parallelThreads
+                        $jobThreads < $serverType->parallelThreads
                 ) {
                     // Since we won't have a task running
                     $jobType = $serverType->jobType;
@@ -653,20 +653,20 @@ class TaskServer
                 switch (true) {
                     // Check to see if a job has passed it's time and retry count
                     case ($jobIsRunning &&
-                          $job->serverInfo->retryCount >= $this->registeredServers[$jobType]->retryCount &&
-                          $time - $job->serverInfo->started > $this->registeredServers[$jobType]->jobTimeout) :
+                            $job->serverInfo->retryCount >= $this->registeredServers[$jobType]->retryCount &&
+                            $time - $job->serverInfo->started > $this->registeredServers[$jobType]->jobTimeout) :
                         $this->stopDeadJob($jobType, $jobId);
                         break;
 
                     // Check to see if the job should be stopped
                     case ($jobIsRunning &&
-                          $time - $job->serverInfo->started > $this->registeredServers[$jobType]->jobTimeout) :
+                            $time - $job->serverInfo->started > $this->registeredServers[$jobType]->jobTimeout) :
                         $this->stopBrokenJob($jobType, $jobId);
                         break;
 
                     // Check to see if the job should be started again
                     case (!$jobIsRunning &&
-                          $time - $job->serverInfo->stopped > $this->registeredServers[$jobType]->retryPause) :
+                            $time - $job->serverInfo->stopped > $this->registeredServers[$jobType]->retryPause) :
                         $this->restartBrokenJob($jobType, $jobId);
                         break;
 
@@ -890,7 +890,7 @@ class TaskServer
         unset(self::$logFilePointers['fatal']);
         unset(self::$logFilePointers['error']);
         unset(self::$logFilePointers['info']);
-        unset(self::$logFilePointers);
+        //unset(self::$logFilePointers);
         self::$pidFile = '';
     }
 

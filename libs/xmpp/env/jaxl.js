@@ -50,31 +50,31 @@ function call_user_func(cb) {
 }
 
 var jaxl = {
-    jid: false,
-    polling: 0,
-    pollUrl: false,
-    lastPoll: false,
-    pollRate: 500,
-    now: false,
-    connected: false,
-    disconnecting: false,
-    payloadHandler: false,
-    connect: function(obj) {
+    jid:false,
+    polling:0,
+    pollUrl:false,
+    lastPoll:false,
+    pollRate:500,
+    now:false,
+    connected:false,
+    disconnecting:false,
+    payloadHandler:false,
+    connect:function (obj) {
         if (obj == null) obj = new Object;
         obj['jaxl'] = 'connect';
         jaxl.sendPayload(obj);
     },
-    disconnect: function(obj) {
+    disconnect:function (obj) {
         if (obj == null) obj = new Object;
         obj['jaxl'] = 'disconnect';
         jaxl.sendPayload(obj);
     },
-    ping: function(obj) {
+    ping:function (obj) {
         if (obj == null) obj = new Object;
         obj['jaxl'] = 'ping';
         jaxl.sendPayload(obj);
     },
-    preparePayload: function(obj) {
+    preparePayload:function (obj) {
         var json = "{";
         for (key in obj) {
             if (json == "{") json += "'" + key + "':'" + obj[key] + "'";
@@ -83,7 +83,7 @@ var jaxl = {
         json += "}";
         return eval("(" + json + ")");
     },
-    sendPayload: function(obj) {
+    sendPayload:function (obj) {
         jaxl.now = new Date().getTime();
         if (jaxl.lastPoll == false) {
             jaxl.xhrPayload(obj);
@@ -92,7 +92,7 @@ var jaxl = {
             diff = jaxl.now - jaxl.lastPoll;
 
             if (diff < jaxl.pollRate) {
-                var xhr = function() {
+                var xhr = function () {
                     jaxl.xhrPayload(obj);
                 };
 
@@ -104,33 +104,33 @@ var jaxl = {
             }
         }
     },
-    xhrPayload: function(obj) {
+    xhrPayload:function (obj) {
         if ((jaxl.polling != 0 || !jaxl.connected || jaxl.disconnecting) && obj['jaxl'] == 'ping') return false;
 
         $.ajax({
-            type: 'POST',
-            url: jaxl.pollUrl,
-            dataType: 'json',
-            data: jaxl.preparePayload(obj),
-            beforeSend: function() {
+            type:'POST',
+            url:jaxl.pollUrl,
+            dataType:'json',
+            data:jaxl.preparePayload(obj),
+            beforeSend:function () {
                 jaxl.lastPoll = new Date().getTime();
                 if (obj['jaxl'] == 'disconnect') {
                     jaxl.disconnecting = true;
                 }
                 jaxl.polling++;
             },
-            success: function(payload) {
+            success:function (payload) {
                 jaxl.polling--;
                 jaxl.handlePayload(payload);
             },
-            complete: function() {
+            complete:function () {
             },
-            error: function() {
+            error:function () {
                 jaxl.polling--;
             }
         });
     },
-    handlePayload: function(payload) {
+    handlePayload:function (payload) {
         if (payload.length == 0) {
             jaxl.ping();
         }
@@ -148,19 +148,19 @@ var jaxl = {
             }
         }
     },
-    urldecode: function(msg) {
+    urldecode:function (msg) {
         return decodeURIComponent(msg.replace(/\+/g, '%20'));
     },
-    urlencode: function(msg) {
+    urlencode:function (msg) {
         return encodeURIComponent(msg);
     },
-    htmlEntities: function(msg) {
+    htmlEntities:function (msg) {
         return msg.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     },
-    stripHTML: function(msg) {
+    stripHTML:function (msg) {
         return msg.replace(/<\/?[^>]+>/gi, '');
     },
-    splitJid: function(jid) {
+    splitJid:function (jid) {
         part1 = jid.split("@");
         part2 = part1[1].split("/");
         ret = new Object;

@@ -216,8 +216,10 @@ class WebTaskServer
             // Setup clients listen socket for reading
             $read[0] = $this->sock;
             for ($i = 0; $i < $this->maxClients; $i++) {
-                if ($this->client[$i]['sock'] != null)
+                if (isset($this->client[$i]) && isset($this->client[$i]['sock']) && $this->client[$i]['sock'] != null) {
                     $read[$i + 1] = $this->client[$i]['sock'];
+                }
+
             }
 
             // Set up a blocking call to socket_select()
@@ -226,16 +228,17 @@ class WebTaskServer
             // If a new connection is being made add it to the clients array
             if (in_array($this->sock, $read)) {
                 for ($i = 0; $i < $this->maxClients; $i++) {
-                    if ($this->client[$i]['sock'] == null) {
+                    if (!isset($this->client[$i]['sock'])) {
                         if (($this->client[$i]['sock'] = socket_accept($this->sock)) < 0) {
                             rLog("socket_accept() failed: " . socket_strerror($this->client[$i]['sock']));
                         } else {
                             rLog("Client #" . $i . " connected");
                         }
                         break;
-                    } elseif ($i == $this->maxClients - 1) {
-                        rLog("Too many clients");
                     }
+                    //elseif (isset($this->client[$i]) && $i == $this->maxClients - 1) {
+                    //    rLog("Too many clients");
+                    //}
                 }
 
                 if (--$ready <= 0)
@@ -243,7 +246,7 @@ class WebTaskServer
             }
 
             for ($i = 0; $i < $this->maxClients; $i++) {
-                if (in_array($this->client[$i]['sock'], $read)) {
+                if (isset($this->client[$i]) && in_array($this->client[$i]['sock'], $read)) {
                     $input = socket_read($this->client[$i]['sock'], 1024);
 
                     if ($input == null) {
@@ -273,12 +276,13 @@ class WebTaskServer
                         }
 
                         // Disconnect the client as we don't have persisten connection implemented yet
-                        socket_close($this->client[$i]['sock']);
-                        unset($this->client[$i]['sock']);
-                        rLog("Disconnected(2) client #" . $i);
                         for ($p = 0; $p < count($this->client); $p++) {
                             socket_write($this->client[$p]['sock'], "DISC " . $i . chr(0));
                         }
+                        socket_close($this->client[$i]['sock']);
+                        unset($this->client[$i]['sock']);
+                        rLog("Disconnected(2) client #" . $i);
+
                     } else {
                         // else we quit the client
                         socket_close($this->client[$i]['sock']);
@@ -288,7 +292,8 @@ class WebTaskServer
                             socket_write($this->client[$p]['sock'], "DISC " . $i . chr(0));
                         }
                     }
-                } else {
+
+                } elseif (isset($this->client[$i])) {
                     // Disconnect clients
                     if ($this->client[$i]['sock'] != null) {
                         //Close the socket

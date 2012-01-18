@@ -17,25 +17,25 @@ if (isset($_REQUEST['jaxl'])) { // Valid bosh request
     // Initialize Jaxl Library
     require_once '/usr/share/php/jaxl/core/jaxl.class.php';
     $jaxl = new JAXL(array(
-                          'domain' => 'localhost',
-                          'port' => 5222,
-                          'boshHost' => 'localhost',
-                          'authType' => 'DIGEST-MD5',
-                          'logLevel' => 4
-                     ));
+        'domain' => 'localhost',
+        'port' => 5222,
+        'boshHost' => 'localhost',
+        'authType' => 'DIGEST-MD5',
+        'logLevel' => 4
+    ));
 
     // Admin jid who will receive all messages sent using this application ui
     define('BOSHCHAT_ADMIN_JID', 'admin@' . $jaxl->domain);
 
     // Include required XEP's
     $jaxl->requires(array(
-                         'JAXL0115', // Entity Capabilities
-                         'JAXL0085', // Chat State Notification
-                         'JAXL0092', // Software Version
-                         'JAXL0203', // Delayed Delivery
-                         'JAXL0202', // Entity Time
-                         'JAXL0206' // XMPP over Bosh
-                    ));
+        'JAXL0115', // Entity Capabilities
+        'JAXL0085', // Chat State Notification
+        'JAXL0092', // Software Version
+        'JAXL0203', // Delayed Delivery
+        'JAXL0202', // Entity Time
+        'JAXL0206' // XMPP over Bosh
+    ));
 
     // Sample Bosh chat application class
     class boshchat
@@ -176,15 +176,15 @@ if (!isset($_REQUEST['jaxl'])) {
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" dir="ltr">
-<head profile="http://gmpg.org/xfn/11">
-    <link rel="SHORTCUT ICON" href="http://im.jaxl.im/favicon.ico" type="image/x-icon">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Web Chat Application using Jaxl Library</title>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-    <script type="text/javascript" src="<?php echo dirname(BOSHCHAT_POLL_URL) ?>/../env/jaxl.js"></script>
-    <script type="text/javascript">jaxl.pollUrl = "<?php echo BOSHCHAT_POLL_URL; ?>";</script>
-    <style type="text/css">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" dir="ltr" >
+<head profile="http://gmpg.org/xfn/11" >
+    <link rel="SHORTCUT ICON" href="http://im.jaxl.im/favicon.ico" type="image/x-icon" >
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title >Web Chat Application using Jaxl Library</title >
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" ></script >
+    <script type="text/javascript" src="<?php echo dirname(BOSHCHAT_POLL_URL) ?>/../env/jaxl.js" ></script >
+    <script type="text/javascript" >jaxl.pollUrl = "<?php echo BOSHCHAT_POLL_URL; ?>";</script >
+    <style type="text/css" >
         body {
             color: #444;
             background-color: #F7F7F7;
@@ -244,10 +244,10 @@ if (!isset($_REQUEST['jaxl'])) {
             color: #AAA;
             display: none;
         }
-    </style>
-    <script type="text/javascript">
+    </style >
+    <script type="text/javascript" >
         var boshchat = {
-            payloadHandler: function(payload) {
+            payloadHandler:function (payload) {
                 if (payload.jaxl == 'authFailed') {
                     jaxl.connected = false;
                     $('#button input').val('Connect');
@@ -295,11 +295,11 @@ if (!isset($_REQUEST['jaxl'])) {
                     jaxl.ping();
                 }
             },
-            appendMessage: function(message) {
+            appendMessage:function (message) {
                 $('#read').append(message);
-                $('#read').animate({ scrollTop: $('#read').attr('scrollHeight') }, 300);
+                $('#read').animate({ scrollTop:$('#read').attr('scrollHeight') }, 300);
             },
-            prepareMessage: function(jid, message) {
+            prepareMessage:function (jid, message) {
                 html = '';
                 html += '<div class="mssgIn">';
                 html += '<p class="from">' + jid + '</p>';
@@ -309,11 +309,11 @@ if (!isset($_REQUEST['jaxl'])) {
             }
         };
 
-        jQuery(function($) {
-            $(document).ready(function() {
+        jQuery(function ($) {
+            $(document).ready(function () {
                 jaxl.payloadHandler = new Array('boshchat', 'payloadHandler');
 
-                $('#button input').click(function() {
+                $('#button input').click(function () {
                     if ($(this).val() == 'Connect') {
                         $(this).val('Connecting...');
 
@@ -330,17 +330,17 @@ if (!isset($_REQUEST['jaxl'])) {
                     }
                 });
 
-                $('#write').focus(function() {
+                $('#write').focus(function () {
                     $(this).val('');
                     $(this).css('color', '#444');
                 });
 
-                $('#write').blur(function() {
+                $('#write').blur(function () {
                     if ($(this).val() == '') $(this).val('Type your message');
                     $(this).css('color', '#AAA');
                 });
 
-                $('#write').keydown(function(e) {
+                $('#write').keydown(function (e) {
                     if (e.keyCode == 13 && jaxl.connected) {
                         message = $.trim($(this).val());
                         if (message.length == 0) return false;
@@ -356,27 +356,27 @@ if (!isset($_REQUEST['jaxl'])) {
                 });
             });
         });
-    </script>
-</head>
-<body>
-<center>
-    <h1>Web Chat Application using Jaxl Library</h1>
+    </script >
+</head >
+<body >
+<center >
+    <h1 >Web Chat Application using Jaxl Library</h1 >
 
-    <div id="uname">
-        <label>Username:</label>
-        <input type="text" value=""/>
-    </div>
-    <div id="passwd">
-        <label>Password:</label>
-        <input type="password" value=""/>
-    </div>
-    <div id="read"></div>
-    <input type="text" value="Type your message" id="write"></input>
+    <div id="uname" >
+        <label >Username:</label >
+        <input type="text" value="" />
+    </div >
+    <div id="passwd" >
+        <label >Password:</label >
+        <input type="password" value="" />
+    </div >
+    <div id="read" ></div >
+    <input type="text" value="Type your message" id="write" ></input >
 
-    <div id="button">
-        <label></label>
-        <input type="button" value="Connect"/>
-    </div>
-</center>
-</body>
-</html>
+    <div id="button" >
+        <label ></label >
+        <input type="button" value="Connect" />
+    </div >
+</center >
+</body >
+</html >

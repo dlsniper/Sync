@@ -17,24 +17,24 @@ require_once '../core/jaxl.class.php';
 // List of constants can be found inside "../../env/jaxl.ini"
 // Note: Values passed to the constructor always overwrite defined constants
 $jaxl = new JAXL(array(
-                      'user' => 'username',
-                      'pass' => 'password',
-                      'host' => 'talk.google.com',
-                      'domain' => 'gmail.com',
-                      'authType' => 'PLAIN',
-                      'autoSubscribe' => true,
-                      'pingInterval' => 60,
-                      'logLevel' => 4
-                 ));
+    'user' => 'username',
+    'pass' => 'password',
+    'host' => 'talk.google.com',
+    'domain' => 'gmail.com',
+    'authType' => 'PLAIN',
+    'autoSubscribe' => true,
+    'pingInterval' => 60,
+    'logLevel' => 4
+));
 
 // Include required XEP's
 $jaxl->requires(array(
-                     'JAXL0115', // Entity Capabilities
-                     'JAXL0092', // Software Version
-                     'JAXL0199', // XMPP Ping
-                     'JAXL0203', // Delayed Delivery
-                     'JAXL0202' // Entity Time
-                ));
+    'JAXL0115', // Entity Capabilities
+    'JAXL0092', // Software Version
+    'JAXL0199', // XMPP Ping
+    'JAXL0203', // Delayed Delivery
+    'JAXL0202' // Entity Time
+));
 
 // Sample Echobot class
 class echobot
